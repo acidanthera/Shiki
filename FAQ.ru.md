@@ -57,7 +57,7 @@
 
 ####FAQ по настройке системы:
 - _Как мне проверить, что аппаратное декодирование видео работает?_  
-Выполните [VDADecoderChecker](https://github.com/cylonbrain/VDADecoderCheck/releases/download/0.20/VDADecoderChecker) и проверьте его вывод:  
+Выполните собранную утилиту [VDADecoderChecker](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-2#post-595056) (или соберите [сами](https://github.com/cylonbrain/VDADecoderCheck)) и проверьте вывод:  
 `GVA info: Successfully connected to the Intel plugin, offline Gen75`  
 `Hardware acceleration is fully supported` (Аппаратное ускорение полностью поддерживается)
 
