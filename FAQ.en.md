@@ -4,15 +4,15 @@ If you have Intel Ivy CPU or newer, iTunes DRM playback does not work for you, a
 Sometimes it might help even improperly configured or problematic Sandy CPUs.
 
 - _How to disable Shiki?_  
-Add -shikioff argument to boot-args. It will also not load when -x or -s are set.
+Add `-shikioff` argument to boot-args. It will also not load when -x or -s are set.
 
 - _How to turn debug printing on in DEBUG builds of Shiki?_  
-Add -shikidbg argument to boot-args.
+Add `-shikidbg` argument to boot-args.
 
 - _What OS X version does this work with?_  
-It is meant to work with 10.9 and newer. However, it is not known whether it works with all the minor releases.  
-Note that Shiki needs a relatively recent version of iTunes. Tested mostly with 12.3 and newer.  
-You should also know that you might get random boot panics with OsxAptioFix(2) and 10.10, a solution is in the works.
+It is meant to work with 10.9 and newer. However, it is recommended to use 10.10 or newer.  
+Note that Shiki needs a relatively recent version of iTunes, e.g. 12.3.3 or newer.  
+If you have issues booting Shiki on 10.10 and newer you could try adding `-shikislow` argument to boot-args.
 
 - _How do I load Shiki?_  
 You are supposed to load it early when your system boots. It is recommended to use bootloader kext injection.  
