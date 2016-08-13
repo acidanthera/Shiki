@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v1.5.1
+- Disabled Shiki when loading in recovery
+
 #### v1.5.0
 - Added 10.12 Beta support
 - Added VMware Fusion support (10.12 only)
