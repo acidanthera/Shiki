@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v1.5.2
+- Disabled Shiki when loading in installer
+
 #### v1.5.1
 - Disabled Shiki when loading in recovery
 
