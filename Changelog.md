@@ -1,5 +1,10 @@
 Shiki Changelog
 ==================
+#### v1.7.0
+- Fixed a rare kernel panic on 10.10 and 10.11
+- Fixed `-shikifast` mode for 10.12
+- Enabled `-shikifast` mode on 10.12 by default
+
 #### v1.5.2
 - Disabled Shiki when loading in installer
 
