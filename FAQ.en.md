@@ -34,8 +34,7 @@ There is a ticklist to check against for all sorts of configurations. See config
 You may theoretically not do this but the consequences will be unspecified.
 
 - _Which GPUs this solution is known to glitch with?_
-   - Azul GPUs (e.g. HD 4400, HD 4600) when used with a connector-full platform-id without a discrete GPU cause a system freeze due to not working HDCP playback. The issue is unrelated to Shiki, and happens regardless of iTunes and QuickTime.  
-   - Certain GPUs (e.g. HD 4000) cause iTunes crashes when playing paid HD movies for unspecified reasons if hardware video decoding is enabled. The issue is likely caused by some Apple bug and supposedly involves HDCP handling. A fresh system or a DRM cleanup (see below) usually help to solve the issue otherwise try using the guide for unsupported CPUs.
+   - Azul GPUs (e.g. HD 4400, HD 4600) when used with a connector-full platform-id without a discrete GPU fail to play HD videos due to not working HDCP playback. The issue is unrelated to Shiki, and happens regardless of iTunes and QuickTime.
 
 - _Is my computer banned?_  
 If you are able to view the trailers but bought movies do not play even after computer authorisation your NIC MAC might be banned. Sometimes it is possible to log out and reauthorise your computer after a short while. Otherwise you must change your LAN MAC address.
@@ -80,7 +79,7 @@ Run:
 `defaults write com.apple.AppleGVA gvaDebug -boolean yes`  
 `defaults write com.apple.AppleGVA enableSyslog -boolean yes`
 
-- _How can I set hardware video decoder preferences?_  
+- _How can I set hardware video decoder preferences (might be needed for some ATI and old NVIDIA cards)?_  
 Run one of the following lines:  
 `defaults write com.apple.AppleGVA forceNV -boolean yes`  — forces NVIDIA decoder  
 `defaults write com.apple.AppleGVA forceATI -boolean yes` — forces ATI decoder  
@@ -88,6 +87,7 @@ Run one of the following lines:
 `defaults write com.apple.AppleGVA forceSWDecoder -boolean yes` — forces software decoder  
 `defaults write com.apple.coremedia hardwaveVideoDecoder disable` — disables hardware decoder  
 `defaults write com.apple.coremedia hardwaveVideoDecoder force` — forces hardware decoder  
+Please note that this preference is *not* needed in most cases, and its improper usage will break CL and VDA decoding.
 
 - _How do I reset my DRM configuration (may be needed to fix the crashes)?_  
 Run the following commands in terminal:  
@@ -135,13 +135,16 @@ BoardHash tool can generate mac board id hashes similar to the ones present in C
 For example, Mac-F221BEC8 (MacPro5,1) stands for 5f571162ce99350785007863627a096bfa11c81b.  
 It seems to have hashes of the macs with special HDCP permissions. E. g. it is known that MacPro5,1 model makes HD movies work on HD 4000 regardless of decoder state. 
 
+- _How can I disable PAVP/HDCP on Intel Azul (HD 4400, HD 4600) GPUs?_  
+You need to isolate `IntelAccelerator::PAVPCommandCallback` in `AppleIntelHD5000Graphics`, because a virtual call to `SafeForceWake` in this function causes a deadlock. On 10.11.6 and 10.12 you could replace `<48 89 8b a8 00 00 00>` by `<90 90 90 90 90 90 90>` in AppleIntelFramebufferAzul. Even though this does fix certain freezes you will still have other issues. For example, hardware video decoding may not work after wakeup. More details can be found on [Applelife](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-8#post-608892).
+
 ####Configuration checklist
 
 - _Non-Shiki based solution if you have:_  
    - AMD with working DRM VDA (e.g. HD 7870, HD 6670, HD 7970);
    - NVIDIA with working DRM VDA (supposedly 2xx series and some others).  
 
-  This solution is not well explored but it is known to work for some people. Kext installation is not needed.
+  This solution is not well explored but it is known to work for some people. Shiki.kext installation is *not* needed.
    - IGPU device is enabled, set to preferred in BIOS, and present with a connector-full AAPL,ig-platform-id prop (e.g. `<03 00 66 01>`) or removed and disabled completely without a trace in IOReg (e. g. via [D2EN register](https://applelife.ru/threads/chernye-trejlery-itunes.42290/page-14#post-584519));
    - Hardware video decoder preferences are forced to ATI or NVIDIA depending on the GPU installed;
    - VDADecoderChecker confirms VDA decoder working with VP3 (NVIDIA) or AMD decoders;
@@ -155,10 +158,17 @@ It seems to have hashes of the macs with special HDCP permissions. E. g. it is k
    - No override preferences are used;
    - Mac model set to the one supporting hardware acceleration.
 
+- _Shiki-based solution for Intel Azul (HD4000, HD4400) without a discrete GPU:_  
+   - IGPU device is enabled, and present with a connector-full AAPL,ig-platform-id prop (e.g. `<03 00 22 0d>`, `<00 00 16 0a>`);
+   - GPU driver or framebuffer are patched to disable PAVP/HDCP;
+   - Hardware video decoder is disabled by a defaults option (video playback will fail after wakeup otherwise);
+   - IMEI device is present in IOReg;
+   - Mac model set to the one supporting hardware acceleration.
+
 - _Shiki-based solution for an unsupported CPU (e.g. Haswell Celeron E):_  
   Hardware video decoding acceleration does not work with these CPUs and to boot you need to fake your CPUID.  
   Disable IGPU completely or rename it to some random name (e.g. IGFX) and install Shiki, it should work for you.
   It is not fully explored what preferences are needed but it is known that disabled hardware acceleration by AppleGVA plist editing/MacPro5,1 model setting helps to view HD movies sometimes.  
   
 
-_Thanks to: 07151129, Andrey1970, Сашко666, chrome, family1232009, garcon, iDark Soul, igork, m-dudarev, Mieze, tatur_sn, Quadie, and certain others._
+_Thanks to: 07151129, Andrey1970, Сашко666, chrome, family1232009, garcon, iDark Soul, igork, m-dudarev, Mieze, Quadie, savvas, tatur_sn, and certain others._
