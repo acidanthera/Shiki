@@ -1,5 +1,14 @@
 Shiki Changelog
 ==================
+#### v1.8.1
+- Added fps.1_0 livestream playback to Safari via `-shikifps` boot argument
+- Added version print to the kernel log
+- Improved performance on 10.12, should be equal to 10.11 now
+- Enabled SSSE3 intrinsics to slightly improve the performance
+- Fixed a rare kernel panic on initialisation failure
+- Fixed a rare page fault during initialisation
+- Fixed page patcher failing to apply some modifications
+
 #### v1.7.0
 - Fixed a rare kernel panic on 10.10 and 10.11
 - Fixed `-shikifast` mode for 10.12

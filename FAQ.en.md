@@ -79,6 +79,10 @@ Run:
 `defaults write com.apple.AppleGVA gvaDebug -boolean yes`  
 `defaults write com.apple.AppleGVA enableSyslog -boolean yes`
 
+- _How can I enable FP debugging?_  
+Run:  
+`defaults write com.apple.coremedia fp_trace 2`  
+
 - _How can I set hardware video decoder preferences (might be needed for some ATI and old NVIDIA cards)?_  
 Run one of the following lines:  
 `defaults write com.apple.AppleGVA forceNV -boolean yes`  — forces NVIDIA decoder  
@@ -159,7 +163,7 @@ You need to isolate `IntelAccelerator::PAVPCommandCallback` in `AppleIntelHD5000
    - Mac model set to the one supporting hardware acceleration.
 
 - _Shiki-based solution for Intel Azul (HD4000, HD4400) without a discrete GPU:_  
-   - IGPU device is enabled, and present with a connector-full AAPL,ig-platform-id prop (e.g. `<03 00 22 0d>`, `<00 00 16 0a>`);
+   - IGPU device is enabled, and present with a connector-full AAPL,ig-platform-id prop (e.g. `<03 00 22 0d>`, `<00 00 16 0a>`), it is reported that renaming IGPU to GFX0 or to an arbitrary name reduces freeze chance;
    - GPU driver or framebuffer are patched to disable PAVP/HDCP;
    - Hardware video decoder is disabled by a defaults option (video playback will fail after wakeup otherwise);
    - IMEI device is present in IOReg;
