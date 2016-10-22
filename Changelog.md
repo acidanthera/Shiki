@@ -1,5 +1,9 @@
 Shiki Changelog
 ==================
+#### v1.9.0
+- Fixed error logging on 10.12
+- Added 10.12.1 beta compatibility
+
 #### v1.8.1
 - Added fps.1_0 livestream playback to Safari via `-shikifps` boot argument
 - Added version print to the kernel log
