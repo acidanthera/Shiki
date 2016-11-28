@@ -86,8 +86,8 @@
 `defaults write com.apple.AppleGVA forceATI -boolean yes` — включение ATI декодера  
 `defaults write com.apple.AppleGVA forceIntel -boolean yes` — включение Intel декодера  
 `defaults write com.apple.AppleGVA forceSWDecoder -boolean yes` — включение программного декодера  
-`defaults write com.apple.coremedia hardwaveVideoDecoder disable` — выключение аппаратного декодера  
-`defaults write com.apple.coremedia hardwaveVideoDecoder force` — включение аппаратного декодера  
+`defaults write com.apple.coremedia hardwareVideoDecoder disable` — выключение аппаратного декодера  
+`defaults write com.apple.coremedia hardwareVideoDecoder force` — включение аппаратного декодера  
 Обратите внимание, что данные параметры *не* нужны в большинстве случаев, и их использование сломает вам CL и VDA.
 
 - _Как мне сбросить конфигурацию DRM (может потребоваться для исправления падений)?_  

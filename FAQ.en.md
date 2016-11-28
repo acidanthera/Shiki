@@ -89,8 +89,8 @@ Run one of the following lines:
 `defaults write com.apple.AppleGVA forceATI -boolean yes` — forces ATI decoder  
 `defaults write com.apple.AppleGVA forceIntel -boolean yes` — forces Intel decoder  
 `defaults write com.apple.AppleGVA forceSWDecoder -boolean yes` — forces software decoder  
-`defaults write com.apple.coremedia hardwaveVideoDecoder disable` — disables hardware decoder  
-`defaults write com.apple.coremedia hardwaveVideoDecoder force` — forces hardware decoder  
+`defaults write com.apple.coremedia hardwareVideoDecoder disable` — disables hardware decoder  
+`defaults write com.apple.coremedia hardwareVideoDecoder force` — forces hardware decoder  
 Please note that this preference is *not* needed in most cases, and its improper usage will break CL and VDA decoding.
 
 - _How do I reset my DRM configuration (may be needed to fix the crashes)?_  
