@@ -1,5 +1,10 @@
 Shiki Changelog
 ==================
+#### v2.0.0
+- Rewrote as a [Lilu.kext](https://github.com/vit9696/Lilu) plugin
+- Added FAQ entries describing how to workaround Intel Azul freezes
+- Opened the source code
+
 #### v1.9.0
 - Fixed error logging on 10.12
 - Added 10.12.1 beta compatibility

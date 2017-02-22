@@ -12,7 +12,7 @@ Add `-shikidbg` argument to boot-args.
 - _What OS X/macOS version does this work with?_  
 It is meant to work with 10.9 and newer. However, it is recommended to use 10.10 or newer.  
 Note that Shiki needs a relatively recent version of iTunes, e.g. 12.3.3 or newer.  
-If you have issues booting Shiki on 10.10 and newer you could try adding `-shikislow` or `-shikifast` argument to boot-args.
+If you have issues booting Shiki on 10.10 and newer you could try adding `-liluslow` or `-lilufast` argument to boot-args.
 
 - _How do I load Shiki?_  
 You are supposed to load it early when your system boots. It is recommended to use bootloader kext injection.  
@@ -34,14 +34,14 @@ There is a ticklist to check against for all sorts of configurations. See config
 You may theoretically not do this but the consequences will be unspecified.
 
 - _Which GPUs this solution is known to glitch with?_
-   - Azul GPUs (e.g. HD 4400, HD 4600) when used with a connector-full platform-id without a discrete GPU fail to play HD videos due to not working HDCP playback. The issue is unrelated to Shiki, and happens regardless of iTunes and QuickTime.
+   - Azul GPUs (e.g. HD 4400, HD 4600) when used with a connector-full platform-id without a discrete GPU fail to play HD videos due to not working HDCP playback. The issue is unrelated to Shiki, and you need [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphicsfixup) to avoid freezes.
 
 - _Is my computer banned?_  
 If you are able to view the trailers but bought movies do not play even after computer authorisation your NIC MAC might be banned. Sometimes it is possible to log out and reauthorise your computer after a short while. Otherwise you must change your LAN MAC address.
 Check System configuration FAQ for libHookMac usage details. If it helps you consider flashing your ethernet card with a different MAC (or using other ways to change it).
 
 - _Is Shiki opensource?_  
-Not completely at this moment. Certain parts like tools or [kernel patcher](https://github.com/vit9696/AppleALC/tree/master/Common) are.
+It is opensource starting with version 2.0.0.
 
 - _How can I download a DRM protected trailer for a local test?_  
 Enable coremedia tracing: `defaults write com.apple.coremedia cfbyteflume_trace 1`  
@@ -140,7 +140,7 @@ For example, Mac-F221BEC8 (MacPro5,1) stands for 5f571162ce99350785007863627a096
 It seems to have hashes of the macs with special HDCP permissions. E. g. it is known that MacPro5,1 model makes HD movies work on HD 4000 regardless of decoder state. 
 
 - _How can I disable PAVP/HDCP on Intel Azul (HD 4400, HD 4600) GPUs?_  
-You need to isolate `IntelAccelerator::PAVPCommandCallback` in `AppleIntelHD5000Graphics`, because a virtual call to `SafeForceWake` in this function causes a deadlock. On 10.11.6 and 10.12 you could replace `<48 89 8b a8 00 00 00>` by `<90 90 90 90 90 90 90>` in AppleIntelFramebufferAzul. Even though this does fix certain freezes you will still have other issues. For example, hardware video decoding may not work after wakeup. More details can be found on [Applelife](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-8#post-608892).
+Consider using [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphicsfixup) to disable PAVP/HDCP and avoid freezes.
 
 ####Configuration checklist
 
@@ -175,4 +175,4 @@ You need to isolate `IntelAccelerator::PAVPCommandCallback` in `AppleIntelHD5000
   It is not fully explored what preferences are needed but it is known that disabled hardware acceleration by AppleGVA plist editing/MacPro5,1 model setting helps to view HD movies sometimes.  
   
 
-_Thanks to: 07151129, Andrey1970, Сашко666, chrome, family1232009, garcon, iDark Soul, igork, m-dudarev, Mieze, Quadie, savvas, tatur_sn, and certain others._
+_Thanks to: 07151129, Andrey1970, Сашко666, chrome, family1232009, garcon, iDark Soul, igork, lvs1974, m-dudarev, Mieze, Quadie, savvas, tatur_sn, and certain others._
