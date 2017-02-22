@@ -162,7 +162,7 @@ Consider using [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphics
    - No override preferences are used;
    - Mac model set to the one supporting hardware acceleration.
 
-- _Shiki-based solution for Intel Azul (HD4000, HD4400) without a discrete GPU:_  
+- _Shiki-based solution for Intel Azul (HD4400, HD4600) without a discrete GPU:_  
    - IGPU device is enabled, and present with a connector-full AAPL,ig-platform-id prop (e.g. `<03 00 22 0d>`, `<00 00 16 0a>`), it is reported that renaming IGPU to GFX0 or to an arbitrary name reduces freeze chance;
    - GPU driver or framebuffer are patched to disable PAVP/HDCP;
    - Hardware video decoder is disabled by a defaults option (video playback will fail after wakeup otherwise);
