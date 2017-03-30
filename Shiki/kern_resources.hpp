@@ -25,5 +25,5 @@ enum : uint32_t {
 	SectionNDRMI = 1,
 	SectionNSTREAM = 2,
 	SectionFCPUID = 3,
-	SectionAll = 3,
+	SectionOFFLINE = 4,
 };

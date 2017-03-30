@@ -262,7 +262,7 @@
 		1C748C1E1C21952C0024EED2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = vit9696;
 				TargetAttributes = {
 					1C32BDB41CDD485C0052FA40 = {
@@ -462,7 +462,7 @@
 				MODULE_NAME = as.vit9696.Shiki;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 2.0.0;
+				MODULE_VERSION = 2.0.1;
 				OTHER_CFLAGS = (
 					"-mmmx",
 					"-msse",
@@ -506,7 +506,7 @@
 				MODULE_NAME = as.vit9696.Shiki;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 2.0.0;
+				MODULE_VERSION = 2.0.1;
 				OTHER_CFLAGS = (
 					"-mmmx",
 					"-msse",

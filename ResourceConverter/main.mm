@@ -80,13 +80,14 @@ static NSString *generatePatchEntries(NSString *file, NSArray *patches) {
 				patchBufIndex++;
 			}
 			
-			[pStr appendFormat:@"\t{ %@, patchBuf%zu, patchBuf%zu, %zu, %@, %@, Section%@ },\n",
+			[pStr appendFormat:@"\t{ %@, patchBuf%zu, patchBuf%zu, %zu, %@, %@, UserPatcher::FileSegment::Segment%@, Section%@ },\n",
 			 [p objectForKey:@"CPU"],
 			 patchBufIndex-2,
 			 patchBufIndex-1,
 			 [f[0] length],
 			 [p objectForKey:@"Skip"] ?: @"0",
 			 [p objectForKey:@"Count"],
+			 [p objectForKey:@"Segment"] ?: @"TextText",
 			 [p objectForKey:@"Section"]
 			 ];
 		}
@@ -105,55 +106,69 @@ static void generateMods(NSString *file, NSString *header, NSArray *modInfos) {
 	auto sections = [[NSMutableDictionary alloc] init];
 	auto sectionList = [[NSMutableString alloc] initWithUTF8String:"\n// Section list\n\nenum : uint32_t {\n"];
 	size_t sectionIndex = 1;
-	uint32_t allSections = 0;
-	
+
 	[sectionList appendString:@"\tSectionUnused = 0,\n"];
 	for (NSDictionary *entry in modInfos) {
+		if ([entry objectForKey:@"Disable"])
+			continue;
+		
 		NSArray *patches = [entry objectForKey:@"Patches"];
 		for (NSDictionary *patch in patches) {
 			if (![sections objectForKey:[patch objectForKey:@"Section"]]) {
 				[sectionList appendFormat:@"\tSection%@ = %lu,\n", [patch objectForKey:@"Section"], sectionIndex];
 				[sections setObject:@"ok" forKey:[patch objectForKey:@"Section"]];
-				allSections |= sectionIndex;
 				sectionIndex++;
 			}
 		}
 	}
 	
-	[sectionList appendFormat:@"\tSectionAll = %u,\n};\n", allSections];
+	[sectionList appendString:@"};\n"];
 	appendFile(header, sectionList);
 	
 	appendFile(file, @"\n// Patch section\n\n");
 	
 	auto modSection = [[NSMutableString alloc] initWithUTF8String:"\n// Mod section\n\n"];
-	
 	[modSection appendString:@"UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {\n"];
 	
+	size_t modCount = 0;
+	
 	for (NSDictionary *entry in modInfos) {
+		if ([entry objectForKey:@"Disable"])
+			continue;
+		
 		NSArray *patches = [entry objectForKey:@"Patches"];
 		[modSection appendFormat:@"\t{ \"%@\", %@ },\n",
 			[entry objectForKey:@"Path"], generatePatchEntries(file, patches)];
+		
+		modCount++;
 	}
 	
 	[modSection appendString:@"};\n"];
-	[modSection appendFormat:@"\nconst size_t ADDPR(binaryModSize) {%lu};\n", [modInfos count]];
+	[modSection appendFormat:@"\nconst size_t ADDPR(binaryModSize) {%lu};\n", modCount];
 	appendFile(file, modSection);
 }
 
 static void generateComparison(NSString *file, NSArray *binaries) {
 	auto procSection = [[NSMutableString alloc] initWithUTF8String:"\n// Process list\n\n"];
 	NSUInteger minProcLength {PATH_MAX};
+	size_t procCount = 0;
 	
 	[procSection appendString:@"UserPatcher::ProcInfo ADDPR(procInfo)[] {\n"];
+	
 	for (NSDictionary *entry in binaries) {
+		if ([entry objectForKey:@"Disable"])
+			continue;
+		
 		auto len = [[entry objectForKey:@"Path"] length];
 		[procSection appendFormat:@"\t{ \"%@\", %lu, Section%@ },\n",
 			[entry objectForKey:@"Path"], len, [entry objectForKey:@"Section"]];
 		if (len < minProcLength)
 			minProcLength = len;
+		
+		procCount++;
 	}
 	[procSection appendString:@"};\n"];
-	[procSection appendFormat:@"\nconst size_t ADDPR(procInfoSize) {%lu};", [binaries count]];
+	[procSection appendFormat:@"\nconst size_t ADDPR(procInfoSize) {%lu};", procCount];
 	//[procSection appendFormat:@"\nconst uint32_t minProcLength {%lu};\n",  minProcLength];
 	
 	

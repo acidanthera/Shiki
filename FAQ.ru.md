@@ -58,7 +58,7 @@
 
 ####FAQ по настройке системы:
 - _Как мне проверить, что аппаратное декодирование видео работает?_  
-Выполните собранную утилиту [VDADecoderChecker](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-2#post-595056) (или соберите [сами](https://github.com/cylonbrain/VDADecoderCheck)) и проверьте вывод:  
+Выполните собранную утилиту [VDADecoderChecker для 10.11](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-2#post-595056)/[VDADecoderChecker для 10.12](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-26#post-647746) (или соберите [сами](https://github.com/cylonbrain/VDADecoderCheck)) и проверьте вывод:  
 `GVA info: Successfully connected to the Intel plugin, offline Gen75`  
 `Hardware acceleration is fully supported` (Аппаратное ускорение полностью поддерживается)
 
@@ -117,6 +117,9 @@
 
 - _Какие модели компьютеров поддерживают аппаратное ускорение?_  
 Это можно узнать из `/System/Library/PrivateFrameworks/AppleGVA.framework/Info.plist`, если ваша Mac модель или ID платы присутствуют там, то эта модель поддерживает аппаратное декодирование видео. Вы должны выбрать ближайшую к вашей конфигурации ПК. Для примера iMac13,1 использует и IGPU, и дискретную видеокарту в паре, тогда как iMac13,3 имеет только IGPU. Если вы используете Mac модель не имеющую дискретной видеокарты, то VDA не будет работать, и вероятно вы получите ошибку от VDADecoderChecker. Используйте более близкую Mac модель или отредактируйте свойство `forceOfflineRenderer` в Info.plist выставив там значение NO для исправления.
+
+- _Как включить онлайн декодер Intel, когда в AppleGVA указан оффлайн?_  
+Добавьте `-shikigva` в аргументы загрузки ядра.
 
 - _Как можно сделать инжекцию IOVARendererID/IOVARendererSubID в некоторых видеокартах NVIDIA?_  
 Веб драйвера NVIDIA могут не добавлять эти значения для карт на архитектуре Maxwell. Вы можете их добавить в кекст состоящий из одного plist (legacy) сами. Правильными значениями для VP4 графических процессоров являются:  

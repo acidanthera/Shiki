@@ -31,10 +31,14 @@ static void shikiStart() {
 	// Attempt to support fps.1_0 in Safari
 	char tmp[16];
 	bool patchStreamVideo = PE_parse_boot_argn("-shikifps", tmp, sizeof(tmp));
+	bool forceAccelRenderer = PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp));
 	
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
 		disableSection(SectionNSTREAM);
+	
+	if (!forceAccelRenderer)
+		disableSection(SectionOFFLINE);
 	
 	lilu.onProcLoad(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
 }
@@ -58,6 +62,7 @@ static const char *bootargBeta[] {
 
 PluginConfiguration ADDPR(config) {
 	xStringify(PRODUCT_NAME),
+	parseModuleVersion(xStringify(MODULE_VERSION)),
 	bootargOff,
 	sizeof(bootargOff)/sizeof(bootargOff[0]),
 	bootargDebug,

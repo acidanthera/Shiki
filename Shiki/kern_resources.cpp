@@ -34,24 +34,32 @@ alignas(8) static const uint8_t patchBuf17[] { 0x6E, 0x76, 0x61, 0x7A, };
 alignas(8) static const uint8_t patchBuf18[] { 0x63, 0x76, 0x61, 0x7A, };
 alignas(8) static const uint8_t patchBuf19[] { 0x6E, 0x76, 0x61, 0x7A, };
 static UserPatcher::BinaryModPatch patches0[] {
-	{ CPU_TYPE_X86, patchBuf0, patchBuf1, 4, 1, 2, SectionNDRMI },
-	{ CPU_TYPE_X86_64, patchBuf2, patchBuf3, 4, 1, 2, SectionNDRMI },
-	{ CPU_TYPE_X86, patchBuf4, patchBuf5, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86_64, patchBuf6, patchBuf7, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86, patchBuf8, patchBuf9, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86_64, patchBuf10, patchBuf11, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86, patchBuf12, patchBuf13, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86, patchBuf16, patchBuf17, 4, 1, 1, SectionNSTREAM },
-	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 4, 1, 1, SectionNSTREAM },
+	{ CPU_TYPE_X86, patchBuf0, patchBuf1, 4, 1, 2, UserPatcher::FileSegment::SegmentTextText, SectionNDRMI },
+	{ CPU_TYPE_X86_64, patchBuf2, patchBuf3, 4, 1, 2, UserPatcher::FileSegment::SegmentTextText, SectionNDRMI },
+	{ CPU_TYPE_X86, patchBuf4, patchBuf5, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86_64, patchBuf6, patchBuf7, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86, patchBuf8, patchBuf9, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86_64, patchBuf10, patchBuf11, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86, patchBuf12, patchBuf13, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86, patchBuf16, patchBuf17, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
+	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 4, 1, 1, UserPatcher::FileSegment::SegmentTextText, SectionNSTREAM },
 };
 alignas(8) static const uint8_t patchBuf20[] { 0x53, 0xB8, 0x01, 0x00, 0x00, 0x00, 0x0F, 0xA2, };
 alignas(8) static const uint8_t patchBuf21[] { 0x53, 0xB8, 0xC2, 0x06, 0x02, 0x00, 0x90, 0x90, };
 alignas(8) static const uint8_t patchBuf22[] { 0xC7, 0xC0, 0x01, 0x00, 0x00, 0x00, 0x0F, 0xA2, };
 alignas(8) static const uint8_t patchBuf23[] { 0xC7, 0xC0, 0xC2, 0x06, 0x02, 0x00, 0x90, 0x90, };
 static UserPatcher::BinaryModPatch patches1[] {
-	{ CPU_TYPE_X86, patchBuf20, patchBuf21, 8, 0, 1, SectionFCPUID },
-	{ CPU_TYPE_X86_64, patchBuf22, patchBuf23, 8, 0, 1, SectionFCPUID },
+	{ CPU_TYPE_X86, patchBuf20, patchBuf21, 8, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionFCPUID },
+	{ CPU_TYPE_X86_64, patchBuf22, patchBuf23, 8, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionFCPUID },
+};
+alignas(8) static const uint8_t patchBuf24[] { 0x66, 0x6F, 0x72, 0x63, 0x65, 0x4F, 0x66, 0x66, };
+alignas(8) static const uint8_t patchBuf25[] { 0x61, 0x76, 0x6F, 0x69, 0x64, 0x4F, 0x66, 0x66, };
+alignas(8) static const uint8_t patchBuf26[] { 0x66, 0x6F, 0x72, 0x63, 0x65, 0x4F, 0x66, 0x66, };
+alignas(8) static const uint8_t patchBuf27[] { 0x61, 0x76, 0x6F, 0x69, 0x64, 0x4F, 0x66, 0x66, };
+static UserPatcher::BinaryModPatch patches2[] {
+	{ CPU_TYPE_X86, patchBuf24, patchBuf25, 8, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
+	{ CPU_TYPE_X86_64, patchBuf26, patchBuf27, 8, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
 };
 
 // Mod section
@@ -59,9 +67,10 @@ static UserPatcher::BinaryModPatch patches1[] {
 UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 	{ "/System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox", patches0, 10 },
 	{ "/System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/CoreFP", patches1, 2 },
+	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 2 },
 };
 
-const size_t ADDPR(binaryModSize) {2};
+const size_t ADDPR(binaryModSize) {3};
 
 // Process list
 

@@ -1,5 +1,10 @@
 Shiki Changelog
 ==================
+#### v2.0.1
+- Requires Lilu 1.1.0 or newer
+- Added more key streaming patches for testing purposes
+- Added `-shikigva` boot argument to allow online hardware video decoder
+
 #### v2.0.0
 - Rewrote as a [Lilu.kext](https://github.com/vit9696/Lilu) plugin
 - Added FAQ entries describing how to workaround Intel Azul freezes
