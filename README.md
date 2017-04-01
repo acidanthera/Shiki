@@ -1,7 +1,7 @@
 Shiki
 =====
 
-Userspace patcher useful for certain modifications.  
+Protected video playback support on recent hardware.  
 
 #### Documentation
 Read FAQs before asking any questions:  
