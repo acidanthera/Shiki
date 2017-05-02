@@ -138,7 +138,7 @@ IOVARendererSubID → `<03 00 00 00>`
 BoardHash может генерировать хэши board id моделей Mac по аналогии с теми, что присутствуют в CoreAUC.framework (функция _PsZXJ2EK7ifxrtgc). Например, для Mac-F221BEC8 (MacPro5,1) это 5f571162ce99350785007863627a096bfa11c81b.  
 Кажется, это хэши маков со специальными правами HDCP. Например, известно, что с Mac моделью MacPro5,1 будут работать HD фильмы на HD4000 вне зависимости от состояния декодера.
 
-- _Как отключить PAVP/HDCP на Intel Azul (HD 4400, HD 4600)?_  
+- _Как отключить PAVP/HDCP на Intel Azul (HD 4400, HD 4600) и Skylake (HD 530)?_  
 Для отключения HDCP/PAVP и предотвращения зависаний рекомендуется использовать [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphicsfixup).
 
 

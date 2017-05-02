@@ -142,7 +142,7 @@ BoardHash tool can generate mac board id hashes similar to the ones present in C
 For example, Mac-F221BEC8 (MacPro5,1) stands for 5f571162ce99350785007863627a096bfa11c81b.  
 It seems to have hashes of the macs with special HDCP permissions. E. g. it is known that MacPro5,1 model makes HD movies work on HD 4000 regardless of decoder state. 
 
-- _How can I disable PAVP/HDCP on Intel Azul (HD 4400, HD 4600) GPUs?_  
+- _How can I disable PAVP/HDCP on Intel Azul (HD 4400, HD 4600) and Skylake (HD 530) GPUs?_  
 Consider using [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphicsfixup) to disable PAVP/HDCP and avoid freezes.
 
 ####Configuration checklist
