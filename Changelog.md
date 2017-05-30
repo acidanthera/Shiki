@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.0.2
+- Added OSBundleCompatibleVersion
+
 #### v2.0.1
 - Requires Lilu 1.1.0 or newer
 - Added more key streaming patches for testing purposes

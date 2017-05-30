@@ -20,6 +20,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(MODULE_VERSION)</string>
+	<key>OSBundleCompatibleVersion</key>
+	<string>1.0</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>as.vit9696.Shiki</key>
