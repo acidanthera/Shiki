@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.0.3
+- Incorporate safer patches accordingly to calling conventions
+
 #### v2.0.2
 - Added OSBundleCompatibleVersion
 

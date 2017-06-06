@@ -11,33 +11,33 @@
 			<array>
 				<dict>
 					<key>Comment</key>
-					<string>drmi -&gt; drmn (disable for VP3 and GVA decoders)</string>
+					<string>drmi -&gt; drmn (disable for VP3 decoders)</string>
 					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
+					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>aW1yZA==</data>
+					<data>v2ltcmS+LAEAAA==</data>
 					<key>Replace</key>
-					<data>bm1yZA==</data>
+					<data>v25tcmS+LAEAAA==</data>
 					<key>Skip</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Count</key>
-					<integer>2</integer>
+					<integer>1</integer>
 					<key>Section</key>
 					<string>NDRMI</string>
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>drmi -&gt; drmn (disable for VP3 and GVA decoders)</string>
+					<string>drmi -&gt; drmn (disable for GVA decoders)</string>
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>aW1yZA==</data>
+					<data>v2ltcmS+kAEAAA==</data>
 					<key>Replace</key>
-					<data>bm1yZA==</data>
+					<data>v25tcmS+kAEAAA==</data>
 					<key>Skip</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Count</key>
-					<integer>2</integer>
+					<integer>1</integer>
 					<key>Section</key>
 					<string>NDRMI</string>
 				</dict>
@@ -45,45 +45,13 @@
 					<key>Comment</key>
 					<string>qavc -&gt; qavn (disable for GVA decoders)</string>
 					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>Y3ZhcQ==</data>
-					<key>Replace</key>
-					<data>bnZhcQ==</data>
-					<key>Skip</key>
-					<integer>1</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>NSTREAM</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>qavc -&gt; qavn (disable for GVA decoders)</string>
-					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>Y3ZhcQ==</data>
+					<data>v2N2YXG+kAEAAA==</data>
 					<key>Replace</key>
-					<data>bnZhcQ==</data>
+					<data>v252YXG+kAEAAA==</data>
 					<key>Skip</key>
-					<integer>1</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>NSTREAM</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>cavc -&gt; cavn (disable for GVA decoders)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>Y3ZhYw==</data>
-					<key>Replace</key>
-					<data>bnZhYw==</data>
-					<key>Skip</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
@@ -95,27 +63,11 @@
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>Y3ZhYw==</data>
+					<data>v2N2YWO+kAEAAA==</data>
 					<key>Replace</key>
-					<data>bnZhYw==</data>
+					<data>v252YWO+kAEAAA==</data>
 					<key>Skip</key>
-					<integer>1</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>NSTREAM</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>eavc -&gt; eavn (disable for GVA decoders)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>Y3ZhZQ==</data>
-					<key>Replace</key>
-					<data>bnZhZQ==</data>
-					<key>Skip</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
@@ -127,27 +79,11 @@
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>Y3ZhZQ==</data>
+					<data>v2N2YWW+kAEAAA==</data>
 					<key>Replace</key>
-					<data>bnZhZQ==</data>
+					<data>v252YWW+kAEAAA==</data>
 					<key>Skip</key>
-					<integer>1</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>NSTREAM</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>zavc -&gt; zavn (disable for GVA decoders)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>Y3Zheg==</data>
-					<key>Replace</key>
-					<data>bnZheg==</data>
-					<key>Skip</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
@@ -159,11 +95,11 @@
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>Y3Zheg==</data>
+					<data>v2N2YXq+kAEAAA==</data>
 					<key>Replace</key>
-					<data>bnZheg==</data>
+					<data>v252YXq+kAEAAA==</data>
 					<key>Skip</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
