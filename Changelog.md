@@ -1,5 +1,9 @@
 Shiki Changelog
 ==================
+
+#### v2.0.4
+- Added High Sierra to the list of compatible OS
+
 #### v2.0.3
 - Incorporate safer patches accordingly to calling conventions
 

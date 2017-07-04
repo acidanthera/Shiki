@@ -70,6 +70,6 @@ PluginConfiguration ADDPR(config) {
 	bootargBeta,
 	sizeof(bootargBeta)/sizeof(bootargBeta[0]),
 	KernelVersion::Mavericks,
-	KernelVersion::Sierra,
+	KernelVersion::HighSierra,
 	shikiStart
 };
