@@ -1,4 +1,4 @@
-####Общий FAQ:
+#### Общий FAQ:
 - _Для чего нужен Shiki?_  
 Если у вас Intel Ivy процессор или новее, воспроизведение iTunes DRM контента не работает, но ваш GPU поддерживает HDCP, вы можете попробовать исправить ситуацию с помощью Shiki.
 
@@ -56,7 +56,7 @@
 - _Можно использовать Shiki для применения других изменений?_  
 Это технически возможно и обсуждаемо.
 
-####FAQ по настройке системы:
+#### FAQ по настройке системы:
 - _Как мне проверить, что аппаратное декодирование видео работает?_  
 Выполните собранную утилиту [VDADecoderChecker для 10.11](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-2#post-595056)/[VDADecoderChecker для 10.12](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-26#post-647746) (или соберите [сами](https://github.com/cylonbrain/VDADecoderCheck)) и проверьте вывод:  
 `GVA info: Successfully connected to the Intel plugin, offline Gen75`  
@@ -142,7 +142,7 @@ BoardHash может генерировать хэши board id моделей M
 Для отключения HDCP/PAVP и предотвращения зависаний рекомендуется использовать [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphicsfixup).
 
 
-####Проверка конфигурации
+#### Проверка конфигурации
 
 - Проблему можно решить без Shiki, если у вас имеется:
    - AMD с рабочим DRM VDA (например, HD 7870, HD 6670, HD 7970);

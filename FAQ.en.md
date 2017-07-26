@@ -1,4 +1,4 @@
-####General FAQ:
+#### General FAQ:
 - _Do I need Shiki?_  
 If you have Intel Ivy CPU or newer, iTunes DRM playback does not work for you, and your GPU works with HDCP, you may try it.  
 Sometimes it might help even improperly configured or problematic Sandy CPUs.
@@ -59,7 +59,7 @@ No, you cannot since Netflix limited their 1080p content for very few mac models
 - _Can I use Shiki to apply other changes?_  
 It may be possible and can be discussed.
 
-####System configuration FAQ:
+#### System configuration FAQ:
 - _How can I check that hardware video decoding works?_  
 Run an existing build of [VDADecoderChecker for 10.11](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-2#post-595056)/[VDADecoderChecker for 10.12](https://applelife.ru/threads/shiki-patcher-polzovatelskogo-urovnja.1349123/page-26#post-647746) (or compile [yourself](https://github.com/cylonbrain/VDADecoderCheck)) and check its output:  
 `GVA info: Successfully connected to the Intel plugin, offline Gen75`  
@@ -145,7 +145,7 @@ It seems to have hashes of the macs with special HDCP permissions. E. g. it is k
 - _How can I disable PAVP/HDCP on Intel Azul (HD 4400, HD 4600) and Skylake (HD 530) GPUs?_  
 Consider using [IntelGraphicsFixup.kext](https://sourceforge.net/p/intelgraphicsfixup) to disable PAVP/HDCP and avoid freezes.
 
-####Configuration checklist
+#### Configuration checklist
 
 - _Non-Shiki based solution if you have:_  
    - AMD with working DRM VDA (e.g. HD 7870, HD 6670, HD 7970);
