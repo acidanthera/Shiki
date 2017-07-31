@@ -31,14 +31,29 @@ static void shikiStart() {
 	// Attempt to support fps.1_0 in Safari
 	char tmp[16];
 	bool patchStreamVideo = PE_parse_boot_argn("-shikifps", tmp, sizeof(tmp));
-	bool forceAccelRenderer = PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp));
+	bool leaveForceAccelRenderer = true;
+	bool leaveBGRASupport = true;
+	
+	if (PE_parse_boot_argn("shikigva", tmp, sizeof(tmp))) {
+		leaveForceAccelRenderer = !(tmp[0] & 1);
+		leaveBGRASupport = !(tmp[0] & 2);
+	}
+	
+	if (PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp))) {
+		SYSLOG("shiki @ -shikigva is deprecated use shikgva=1 instead");
+		leaveForceAccelRenderer = false;
+	}
+	
 	
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
 		disableSection(SectionNSTREAM);
 	
-	if (!forceAccelRenderer)
+	if (leaveForceAccelRenderer)
 		disableSection(SectionOFFLINE);
+	
+	if (leaveBGRASupport)
+		disableSection(SectionBGRA);
 	
 	lilu.onProcLoad(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
 }

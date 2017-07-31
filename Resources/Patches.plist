@@ -114,22 +114,6 @@
 			<array>
 				<dict>
 					<key>Comment</key>
-					<string>push ebx : mov eax,1 : cpuid -&gt; mov rax,206C2 : nop : nop (Xeon E5620) or 206A7 (i7 2600k)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>U7gBAAAAD6I=</data>
-					<key>Replace</key>
-					<data>U7jCBgIAkJA=</data>
-					<key>Skip</key>
-					<integer>0</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>FCPUID</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
 					<string>mov rax,1 : cpuid -&gt;  mov rax,206C2h : nop : nop (Xeon E5620) or 206A7 (i7 2600k)</string>
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
@@ -153,22 +137,6 @@
 			<string>/System/Library/PrivateFrameworks/CoreLSKD.framework/Versions/A/CoreLSKD</string>
 			<key>Patches</key>
 			<array>
-				<dict>
-					<key>Comment</key>
-					<string>push ebx : mov eax,1 : cpuid -&gt; mov rax,206C2 : nop : nop (Xeon E5620) or 206A7 (i7 2600k)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>U7gBAAAAD6I=</data>
-					<key>Replace</key>
-					<data>U7jCBgIAkJA=</data>
-					<key>Skip</key>
-					<integer>0</integer>
-					<key>Count</key>
-					<integer>5</integer>
-					<key>Section</key>
-					<string>FCPUID</string>
-				</dict>
 				<dict>
 					<key>Comment</key>
 					<string>mov rax,1 : cpuid -&gt;  mov rax,206C2h : nop : nop (Xeon E5620) or 206A7 (i7 2600k)</string>
@@ -196,22 +164,6 @@
 			<array>
 				<dict>
 					<key>Comment</key>
-					<string>push ebx : mov eax,1 : cpuid -&gt; mov rax,206C2 : nop : nop (Xeon E5620) or 206A7 (i7 2600k)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>U7gBAAAAD6I=</data>
-					<key>Replace</key>
-					<data>U7jCBgIAkJA=</data>
-					<key>Skip</key>
-					<integer>0</integer>
-					<key>Count</key>
-					<integer>2</integer>
-					<key>Section</key>
-					<string>FCPUID</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
 					<string>mov rax,1 : cpuid -&gt;  mov rax,206C2h : nop : nop (Xeon E5620) or 206A7 (i7 2600k)</string>
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
@@ -237,24 +189,6 @@
 					<key>Comment</key>
 					<string>forceOfflineRenderer -&gt; avoidOfflineRenderer</string>
 					<key>CPU</key>
-					<string>CPU_TYPE_X86</string>
-					<key>Find</key>
-					<data>Zm9yY2VPZmY=</data>
-					<key>Replace</key>
-					<data>YXZvaWRPZmY=</data>
-					<key>Skip</key>
-					<integer>0</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>OFFLINE</string>
-					<key>Segment</key>
-					<string>TextCstring</string>
-				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>forceOfflineRenderer -&gt; avoidOfflineRenderer</string>
-					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
 					<data>Zm9yY2VPZmY=</data>
@@ -266,6 +200,24 @@
 					<integer>2</integer>
 					<key>Section</key>
 					<string>OFFLINE</string>
+					<key>Segment</key>
+					<string>TextCstring</string>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>hweBGRA -&gt; sweBGRA</string>
+					<key>CPU</key>
+					<string>CPU_TYPE_X86_64</string>
+					<key>Find</key>
+					<data>aHdlQkdSQQ==</data>
+					<key>Replace</key>
+					<data>c3dlQkdSQQ==</data>
+					<key>Skip</key>
+					<integer>0</integer>
+					<key>Count</key>
+					<integer>2</integer>
+					<key>Section</key>
+					<string>BGRA</string>
 					<key>Segment</key>
 					<string>TextCstring</string>
 				</dict>
