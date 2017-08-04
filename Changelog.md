@@ -5,6 +5,7 @@ Shiki Changelog
 - Added High Sierra to the list of compatible OS
 - Changed `-shikigva` to `shikigva=1`
 - Added bit 2 to (e.g. `shikigva=2`) to disable hweBGRA (useful for some AMD)
+- Added FAQ in simplified Chinese (thx PMHeart)
 
 #### v2.0.3
 - Incorporate safer patches accordingly to calling conventions

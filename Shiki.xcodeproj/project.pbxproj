@@ -58,6 +58,9 @@
 		1C748C271C21952C0024EED2 /* Shiki.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Shiki.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C748C2C1C21952C0024EED2 /* kern_start.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_start.cpp; sourceTree = "<group>"; };
 		1C748C2E1C21952C0024EED2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE2207681F3449030097F9F8 /* FAQ.en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FAQ.en.md; sourceTree = "<group>"; };
+		CE2207691F3449030097F9F8 /* FAQ.ru.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FAQ.ru.md; sourceTree = "<group>"; };
+		CE22076A1F3449030097F9F8 /* FAQ.zh_CN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FAQ.zh_CN.md; sourceTree = "<group>"; };
 		CE405EDE1E4A754A00AA0B3D /* kern_api.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_api.hpp; sourceTree = "<group>"; };
 		CE405EDF1E4A754A00AA0B3D /* kern_compression.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_compression.hpp; sourceTree = "<group>"; };
 		CE405EE01E4A754A00AA0B3D /* kern_config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_config.hpp; sourceTree = "<group>"; };
@@ -73,8 +76,6 @@
 		CE405EEC1E4A754A00AA0B3D /* LegacyIOService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyIOService.h; sourceTree = "<group>"; };
 		CE405EEE1E4A754A00AA0B3D /* plugin_start.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = plugin_start.cpp; sourceTree = "<group>"; };
 		CEC962431D835DE000E3E772 /* Changelog.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Changelog.md; sourceTree = "<group>"; };
-		CEC962441D835DE000E3E772 /* FAQ.en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FAQ.en.md; sourceTree = "<group>"; };
-		CEC962451D835DE000E3E772 /* FAQ.ru.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FAQ.ru.md; sourceTree = "<group>"; };
 		CEC962461D835DE000E3E772 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		CEC962471D835DE000E3E772 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CECE7F1F1D8812A000B291A7 /* kern_resources.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = kern_resources.hpp; sourceTree = "<group>"; };
@@ -142,6 +143,16 @@
 			path = Shiki;
 			sourceTree = "<group>";
 		};
+		CE2207671F3449030097F9F8 /* Manual */ = {
+			isa = PBXGroup;
+			children = (
+				CE2207681F3449030097F9F8 /* FAQ.en.md */,
+				CE2207691F3449030097F9F8 /* FAQ.ru.md */,
+				CE22076A1F3449030097F9F8 /* FAQ.zh_CN.md */,
+			);
+			path = Manual;
+			sourceTree = "<group>";
+		};
 		CE405EDD1E4A754A00AA0B3D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,9 +196,8 @@
 		CEC962481D835DE400E3E772 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
+				CE2207671F3449030097F9F8 /* Manual */,
 				CEC962431D835DE000E3E772 /* Changelog.md */,
-				CEC962441D835DE000E3E772 /* FAQ.en.md */,
-				CEC962451D835DE000E3E772 /* FAQ.ru.md */,
 				CEC962461D835DE000E3E772 /* LICENSE.txt */,
 				CEC962471D835DE000E3E772 /* README.md */,
 			);
