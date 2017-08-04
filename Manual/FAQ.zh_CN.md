@@ -27,7 +27,7 @@
 不，不需要。
 
 - _在测试 Shiki 之前，如何确定系统已正确配置?_
-您可以查阅[配置列表](https://github.com/vit9696/Shiki/blob/master/FAQ.zh_CN.md#配置列表)，这里面列出了所有的配置要求。
+您可以查阅[配置列表](https://github.com/vit9696/Shiki/blob/master/Manual/FAQ.zh_CN.md#配置列表)，这里面列出了所有的配置要求。
 
 - _在使用 Shiki 之前，为什么应该正确配置 VDA ?_  
 理论上来说这可能不必要，不过这会带来未知的结果。
@@ -37,7 +37,7 @@
 
 - _我的机器会被禁止吗?_  
 如果您可以播放一个电影的预告片，但购买后的电影无法播放，即使已经对此电脑进行了授权，那么您的 NIC MAC 可能已被禁止。有时可以通过注销账户，并稍等片刻来重新授权来解决，但如果这无效的话，您可能需要修改以太网 MAC 地址。
-查阅[系统配置常见问题](https://github.com/vit9696/Shiki/blob/master/FAQ.zh_CN.md#系统配置常见问题)以获取 libHookMac 的详细用法，如果它可以工作的话，尝试修改您的以太网卡 MAC 地址。(或使用其他方式修改亦可)
+查阅[系统配置常见问题](https://github.com/vit9696/Shiki/blob/master/Manual/FAQ.zh_CN.md#系统配置常见问题)以获取 libHookMac 的详细用法，如果它可以工作的话，尝试修改您的以太网卡 MAC 地址。(或使用其他方式修改亦可)
 
 - _Shiki 开源吗?_  
 从 2.0.0 版本起开源。
@@ -51,7 +51,7 @@
 
 - _为什么 DRM 播放一段时间后开始出现一些错乱?_  
 从测试中来看这似乎是 Apple DRM 解码器的问题，并且在某些白苹果上也存在。
-基本上这样的问题不会出现，除了在某些 1080p 高比特率的视频上，如遇到这样的问题，请尝试重新启动电脑，重设 DRM 配置(查阅[系统配置常见问题](https://github.com/vit9696/Shiki/blob/master/FAQ.zh_CN.md#系统配置常见问题))，检查电源管理是否正常工作。
+基本上这样的问题不会出现，除了在某些 1080p 高比特率的视频上，如遇到这样的问题，请尝试重新启动电脑，重设 DRM 配置(查阅[系统配置常见问题](https://github.com/vit9696/Shiki/blob/master/Manual/FAQ.zh_CN.md#系统配置常见问题))，检查电源管理是否正常工作。
 
 - _可以用 Shiki 播放 HTML5 Netfilx 视频吗?_  
 不，Netflix 限制了 1080p 的某些视频，只有极少数的机型才可以播放。
