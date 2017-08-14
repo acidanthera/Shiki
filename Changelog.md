@@ -1,6 +1,9 @@
 Shiki Changelog
 ==================
 
+#### v2.0.5
+- Added High Sierra installer detection
+
 #### v2.0.4
 - Added High Sierra to the list of compatible OS
 - Changed `-shikigva` to `shikigva=1`

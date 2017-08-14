@@ -64,7 +64,8 @@ static const char *bootargOff[] {
 	"rp0",
 	"rp",
 	"container-dmg",
-	"root-dmg" // should we check for com.apple.recovery.boot or InstallESD.dmg?
+	"root-dmg",
+	"auth-root-dmg"
 };
 
 static const char *bootargDebug[] {
