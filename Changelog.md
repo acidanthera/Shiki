@@ -1,6 +1,9 @@
 Shiki Changelog
 ==================
 
+#### v2.0.6
+- Added Lilu 1.1.8 safe mode loading compatibility
+
 #### v2.0.5
 - Added High Sierra installer detection
 

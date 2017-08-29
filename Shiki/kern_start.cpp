@@ -65,7 +65,9 @@ static const char *bootargOff[] {
 	"rp",
 	"container-dmg",
 	"root-dmg",
-	"auth-root-dmg"
+	"auth-root-dmg",
+	// As well as safe mode
+	"-x"
 };
 
 static const char *bootargDebug[] {
