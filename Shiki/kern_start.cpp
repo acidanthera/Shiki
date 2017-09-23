@@ -40,7 +40,7 @@ static void shikiStart() {
 	}
 	
 	if (PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp))) {
-		SYSLOG("shiki @ -shikigva is deprecated use shikgva=1 instead");
+		SYSLOG("shiki", "-shikigva is deprecated use shikgva=1 instead");
 		leaveForceAccelRenderer = false;
 	}
 	
