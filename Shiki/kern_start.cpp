@@ -59,15 +59,7 @@ static void shikiStart() {
 }
 
 static const char *bootargOff[] {
-	"-shikioff",
-	// Additionally disable during recovery/installation
-	"rp0",
-	"rp",
-	"container-dmg",
-	"root-dmg",
-	"auth-root-dmg",
-	// As well as safe mode
-	"-x"
+	"-shikioff"
 };
 
 static const char *bootargDebug[] {
@@ -81,6 +73,7 @@ static const char *bootargBeta[] {
 PluginConfiguration ADDPR(config) {
 	xStringify(PRODUCT_NAME),
 	parseModuleVersion(xStringify(MODULE_VERSION)),
+	LiluAPI::AllowNormal,
 	bootargOff,
 	arrsize(bootargOff),
 	bootargDebug,
