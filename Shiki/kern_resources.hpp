@@ -27,4 +27,5 @@ enum : uint32_t {
 	SectionFCPUID = 3,
 	SectionOFFLINE = 4,
 	SectionBGRA = 5,
+	SectionNVDA = 6,
 };

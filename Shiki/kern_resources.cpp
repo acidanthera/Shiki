@@ -42,9 +42,12 @@ alignas(8) static const uint8_t patchBuf14[] { 0x66, 0x6F, 0x72, 0x63, 0x65, 0x4
 alignas(8) static const uint8_t patchBuf15[] { 0x61, 0x76, 0x6F, 0x69, 0x64, 0x4F, 0x66, 0x66, };
 alignas(8) static const uint8_t patchBuf16[] { 0x68, 0x77, 0x65, 0x42, 0x47, 0x52, 0x41, };
 alignas(8) static const uint8_t patchBuf17[] { 0x73, 0x77, 0x65, 0x42, 0x47, 0x52, 0x41, };
+alignas(8) static const uint8_t patchBuf18[] { 0x00, };
+alignas(8) static const uint8_t patchBuf19[] { 0x00, };
 static UserPatcher::BinaryModPatch patches2[] {
 	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 8, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
 	{ CPU_TYPE_X86_64, patchBuf16, patchBuf17, 7, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionBGRA },
+	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 1, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionNVDA },
 };
 
 // Mod section
@@ -52,7 +55,7 @@ static UserPatcher::BinaryModPatch patches2[] {
 UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 	{ "/System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox", patches0, 6 },
 	{ "/System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/CoreFP", patches1, 1 },
-	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 2 },
+	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 3 },
 };
 
 const size_t ADDPR(binaryModSize) {3};

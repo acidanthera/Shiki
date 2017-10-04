@@ -130,7 +130,8 @@ IOVARendererID    → `<08 00 04 01>`
 IOVARendererSubID → `<03 00 00 00>`  
 VP3 需要一个不同的 IOVARendererID → `<04 00 04 01>`.  
 感谢 igork 的发现。
-或者，亦可使用 [NvidiaGraphicsFixup](https://sourceforge.net/p/nvidiagraphicsfixup) (需使用 1.2.0 或更高版本) 来自动设定这些值。
+或者，亦可使用 [NvidiaGraphicsFixup](https://sourceforge.net/p/nvidiagraphicsfixup) (需使用 1.2.0 或更高版本) 来自动设定这些值。  
+Intel Skylake (第六代) 或更新平台的核芯显卡需使用对 AppleGVA 的一组补丁以配合 NVIDIA 独立显卡工作，您可以通过加入 `shikigva=4` 参数启用此补丁。
 
 - _如果 AMD 显卡无法使用 VDA 解码器_  
 使用 Intel 核芯显卡作为主显卡，并注入一个所有 connectors 都可用的 ig-platform-id (如 HD 4000 使用 `<03 00 66 01>`；HD 4600 使用 `<03 00 22 0D>`)，这似乎改善了某些 AMD 显卡的情况。(如 HD 7750)

@@ -221,6 +221,24 @@
 					<key>Segment</key>
 					<string>TextCstring</string>
 				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>Unlock NVIDIA acceleration for SKL/KBL (see shikiNvidiaPatch)</string>
+					<key>CPU</key>
+					<string>CPU_TYPE_X86_64</string>
+					<key>Find</key>
+					<data>AA==</data>
+					<key>Replace</key>
+					<data>AA==</data>
+					<key>Skip</key>
+					<integer>0</integer>
+					<key>Count</key>
+					<integer>1</integer>
+					<key>Section</key>
+					<string>NVDA</string>
+					<key>Segment</key>
+					<string>TextText</string>
+				</dict>
 			</array>
 		</dict>
 	</array>

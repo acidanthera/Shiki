@@ -3,6 +3,7 @@ Shiki Changelog
 
 #### v2.1.0
 - Requires Lilu 1.2.0 or higher
+- Added hardware video decoding fix for SKL/KBL & NVIDIA (`shikigva=4`)
 - Added Lilu 1.2.0 safe mode loading compatibility
 
 #### v2.0.5

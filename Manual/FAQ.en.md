@@ -129,7 +129,8 @@ NVIDIA drivers do not properly add these values necessary for VDA decoding for M
 IOVARendererID    → `<08 00 04 01>`  
 IOVARendererSubID → `<03 00 00 00>`  
 VP3 ones want a different IOVARendererID → `<04 00 04 01>`.  
-Thanks to igork for noticing it. You may use [NvidiaGraphicsFixup](https://sourceforge.net/p/nvidiagraphicsfixup) Lilu plugin starting with 1.2.0 to do this automatically.
+Thanks to igork for noticing it. You may use [NvidiaGraphicsFixup](https://sourceforge.net/p/nvidiagraphicsfixup) Lilu plugin starting with 1.2.0 to do this automatically.  
+Intel Skylake and newer processors require an AppleGVA patch to be compatible with NVIDIA GPUs, you may use `shikigva=4` boot argument for that.
 
 - _I cannot get VDA decoder work with my AMD GPU, what could I try?_  
 Prioritising Intel and using connector-full platform-id (e.g. `<03 00 66 01>` for HD 4000, `<03 00 22 0D>` for HD 4600) seems to help with certain AMD GPUs (e.g. HD 7750).
