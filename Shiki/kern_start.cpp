@@ -14,7 +14,8 @@
 enum ShikiGVAPatches {
 	ForceOnlineRenderer = 1,
 	AllowNonBGRA = 2,
-	ForceCompatibleRenderer = 4
+	ForceCompatibleRenderer = 4,
+	VDAExecutableWhitelist = 8
 };
 
 // 32 bytes should be reasonable for a safe comparison
@@ -160,17 +161,22 @@ static void shikiStart() {
 	bool leaveForceAccelRenderer = true;
 	bool leaveBGRASupport = true;
 	bool leaveNvidiaUnlock = true;
+	bool leaveExecutableWhiteList = true;
 	
 	if (PE_parse_boot_argn("shikigva", tmp, sizeof(tmp))) {
 		leaveForceAccelRenderer = !(tmp[0] & ForceOnlineRenderer);
 		leaveBGRASupport = !(tmp[0] & AllowNonBGRA);
 		leaveNvidiaUnlock = !(tmp[0] & ForceCompatibleRenderer);
+		leaveExecutableWhiteList = !(tmp[0] & VDAExecutableWhitelist);
 	}
 	
 	if (PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp))) {
 		SYSLOG("shiki", "-shikigva is deprecated use shikigva=1 instead");
 		leaveForceAccelRenderer = false;
 	}
+
+	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d", patchStreamVideo, !leaveForceAccelRenderer,
+		   !leaveBGRASupport, !leaveNvidiaUnlock, !leaveExecutableWhiteList);
 
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
@@ -193,6 +199,7 @@ static void shikiStart() {
 		}
 	}
 
+	bool nvPatchOk = false;
 	if (nvPatch && !leaveNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan) {
 		// Do not enable until we are certain it works
 		nvPatch->section = SectionUnused;
@@ -200,11 +207,14 @@ static void shikiStart() {
 		nvPatch->replace = nvPatchReplace;
 		nvPatch->size    = NVPatchSize;
 		auto err = lilu.onPatcherLoad(shikiNvidiaPatch);
-		if (err != LiluAPI::Error::NoError)
+		if (err == LiluAPI::Error::NoError)
+			nvPatchOk = true;
+		else
 			SYSLOG("shiki", "unable to attach to patcher load %d", err);
-	} else {
-		disableSection(SectionNVDA);
 	}
+
+	if (leaveExecutableWhiteList || !nvPatchOk)
+		disableSection(SectionNVDA);
 
 	auto err = lilu.onProcLoad(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
 	if (err != LiluAPI::Error::NoError)

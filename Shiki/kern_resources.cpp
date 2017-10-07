@@ -61,12 +61,26 @@ UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 const size_t ADDPR(binaryModSize) {3};
 
 // Process list
+using PF = UserPatcher::ProcInfo::ProcFlags;
 
 UserPatcher::ProcInfo ADDPR(procInfo)[] {
-	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionNDRMI },
-	{ "/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player", 66, SectionNDRMI },
-	{ "/Applications/Safari.app/Contents/MacOS/Safari", 46, SectionNSTREAM },
-	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNSTREAM },
+	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionNDRMI, PF::MatchExact },
+	{ "/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player", 66, SectionNDRMI, PF::MatchExact },
+	{ "/Applications/Safari.app/Contents/MacOS/Safari", 46, SectionNSTREAM, PF::MatchExact },
+	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNSTREAM, PF::MatchExact },
+	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNVDA, PF::MatchExact },
+	{ "/Applications/Safari.app/Contents/MacOS/Safari", 46, SectionNVDA, PF::MatchExact },
+	{ "/Final Cut Pro.app/Contents/MacOS/Final Cut Pro", 47, SectionNVDA, PF::MatchSuffix },
+	{ "/Motion.app/Contents/MacOS/Motion", 33, SectionNVDA, PF::MatchSuffix },
+	{ "/Compressor.app/Contents/MacOS/Compressor", 41, SectionNVDA, PF::MatchSuffix },
+	{ "/IINA.app/Contents/MacOS/IINA", 29, SectionNVDA, PF::MatchSuffix },
+	{ "/VLC.app/Contents/MacOS/VLC", 27, SectionNVDA, PF::MatchSuffix },
+	{ "/MacX Video Converter Pro.app/Contents/MacOS/MacX Video Converter Pro", 69, SectionNVDA, PF::MatchSuffix },
+	{ "/XviD4PSP.app/Contents/MacOS/XviD4PSP", 37, SectionNVDA, PF::MatchSuffix },
+	{ "/Opera.app/Contents/MacOS/Opera", 31, SectionNVDA, PF::MatchSuffix },
+	{ "/Firefox.app/Contents/MacOS/firefox-bin", 39, SectionNVDA, PF::MatchSuffix },
+	{ "/Firefox.app/Contents/MacOS/firefox", 35, SectionNVDA, PF::MatchSuffix },
+	{ "/VDADecoderChecker", 18, SectionNVDA, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {4};
+const size_t ADDPR(procInfoSize) {17};

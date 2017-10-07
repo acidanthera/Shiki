@@ -4,7 +4,7 @@ Shiki Changelog
 #### v2.1.0
 - Requires Lilu 1.2.0 or higher
 - Added hardware video decoding fix for SKL/KBL & NVIDIA (`shikigva=4`)
-- Added Lilu 1.2.0 safe mode loading compatibility
+- Added temporary process whitelist for 10.13 SKL/KBL & NVIDIA (`shikigva=12`)
 
 #### v2.0.5
 - Added High Sierra installer detection

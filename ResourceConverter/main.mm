@@ -149,7 +149,8 @@ static void generateMods(NSString *file, NSString *header, NSArray *modInfos) {
 }
 
 static void generateComparison(NSString *file, NSArray *binaries) {
-	auto procSection = [[[NSMutableString alloc] initWithUTF8String:"\n// Process list\n\n"] autorelease];
+	auto procSection = [[[NSMutableString alloc] initWithUTF8String:"\n// Process list\n"
+						 "using PF = UserPatcher::ProcInfo::ProcFlags;\n\n"] autorelease];
 	NSUInteger minProcLength {PATH_MAX};
 	size_t procCount = 0;
 	
@@ -160,8 +161,10 @@ static void generateComparison(NSString *file, NSArray *binaries) {
 			continue;
 		
 		auto len = [[entry objectForKey:@"Path"] length];
-		[procSection appendFormat:@"\t{ \"%@\", %lu, Section%@ },\n",
-			[entry objectForKey:@"Path"], len, [entry objectForKey:@"Section"]];
+		NSString *flags = [entry objectForKey:@"Flags"];
+		[procSection appendFormat:@"\t{ \"%@\", %lu, Section%@, %@ },\n",
+			[entry objectForKey:@"Path"], len, [entry objectForKey:@"Section"],
+		 flags ? flags : @"PF::MatchExact"];
 		if (len < minProcLength)
 			minProcLength = len;
 		
