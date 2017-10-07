@@ -193,18 +193,17 @@ static void shikiStart() {
 		}
 	}
 
-	if (nvPatch) {
+	if (nvPatch && !leaveNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan) {
 		// Do not enable until we are certain it works
 		nvPatch->section = SectionUnused;
 		nvPatch->find    = nvPatchFind;
 		nvPatch->replace = nvPatchReplace;
 		nvPatch->size    = NVPatchSize;
-
-		if (!leaveNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan) {
-			auto err = lilu.onPatcherLoad(shikiNvidiaPatch);
-			if (err != LiluAPI::Error::NoError)
-				SYSLOG("shiki", "unable to attach to patcher load %d", err);
-		}
+		auto err = lilu.onPatcherLoad(shikiNvidiaPatch);
+		if (err != LiluAPI::Error::NoError)
+			SYSLOG("shiki", "unable to attach to patcher load %d", err);
+	} else {
+		disableSection(SectionNVDA);
 	}
 
 	auto err = lilu.onProcLoad(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
