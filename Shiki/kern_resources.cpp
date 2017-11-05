@@ -49,6 +49,11 @@ static UserPatcher::BinaryModPatch patches2[] {
 	{ CPU_TYPE_X86_64, patchBuf16, patchBuf17, 7, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionBGRA },
 	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 1, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionNVDA },
 };
+alignas(8) static const uint8_t patchBuf20[] { 0x41, 0x70, 0x70, 0x6C, 0x65, 0x47, 0x56, 0x41, 0x2E, 0x66, 0x72, 0x61, 0x6D, 0x65, 0x77, 0x6F, 0x72, 0x6B, };
+alignas(8) static const uint8_t patchBuf21[] { 0x41, 0x70, 0x70, 0x6C, 0x65, 0x47, 0x56, 0x41, 0x2E, 0x64, 0x6F, 0x6E, 0x6F, 0x74, 0x77, 0x6F, 0x72, 0x6B, };
+static UserPatcher::BinaryModPatch patches3[] {
+	{ CPU_TYPE_X86_64, patchBuf20, patchBuf21, 18, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionKILLGVA },
+};
 
 // Mod section
 
@@ -56,15 +61,17 @@ UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 	{ "/System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox", patches0, 6 },
 	{ "/System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/CoreFP", patches1, 1 },
 	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 3 },
+	{ "/System/Library/Frameworks/MediaToolbox.framework/Versions/A/MediaToolbox", patches3, 1 },
 };
 
-const size_t ADDPR(binaryModSize) {3};
+const size_t ADDPR(binaryModSize) {4};
 
 // Process list
 using PF = UserPatcher::ProcInfo::ProcFlags;
 
 UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionNDRMI, PF::MatchExact },
+	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionKILLGVA, PF::MatchExact },
 	{ "/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player", 66, SectionNDRMI, PF::MatchExact },
 	{ "/Applications/Safari.app/Contents/MacOS/Safari", 46, SectionNSTREAM, PF::MatchExact },
 	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNSTREAM, PF::MatchExact },
@@ -83,4 +90,4 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/VDADecoderChecker", 18, SectionNVDA, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {17};
+const size_t ADDPR(procInfoSize) {18};

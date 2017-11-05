@@ -15,7 +15,8 @@ enum ShikiGVAPatches {
 	ForceOnlineRenderer = 1,
 	AllowNonBGRA = 2,
 	ForceCompatibleRenderer = 4,
-	VDAExecutableWhitelist = 8
+	VDAExecutableWhitelist = 8,
+    KillAppleGVA = 16
 };
 
 // 32 bytes should be reasonable for a safe comparison
@@ -162,12 +163,14 @@ static void shikiStart() {
 	bool leaveBGRASupport = true;
 	bool leaveNvidiaUnlock = true;
 	bool leaveExecutableWhiteList = true;
+    bool leaveAppleGVAAlone = true;
 	
 	if (PE_parse_boot_argn("shikigva", tmp, sizeof(tmp))) {
 		leaveForceAccelRenderer = !(tmp[0] & ForceOnlineRenderer);
 		leaveBGRASupport = !(tmp[0] & AllowNonBGRA);
 		leaveNvidiaUnlock = !(tmp[0] & ForceCompatibleRenderer);
 		leaveExecutableWhiteList = !(tmp[0] & VDAExecutableWhitelist);
+        leaveAppleGVAAlone = !(tmp[0] & KillAppleGVA);
 	}
 	
 	if (PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp))) {
@@ -175,8 +178,8 @@ static void shikiStart() {
 		leaveForceAccelRenderer = false;
 	}
 
-	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d", patchStreamVideo, !leaveForceAccelRenderer,
-		   !leaveBGRASupport, !leaveNvidiaUnlock, !leaveExecutableWhiteList);
+	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d gva %d", patchStreamVideo, !leaveForceAccelRenderer,
+		   !leaveBGRASupport, !leaveNvidiaUnlock, !leaveExecutableWhiteList, !leaveAppleGVAAlone);
 
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
@@ -187,6 +190,9 @@ static void shikiStart() {
 	
 	if (leaveBGRASupport)
 		disableSection(SectionBGRA);
+    
+    if (leaveAppleGVAAlone)
+        disableSection(SectionKILLGVA);
 
 	for (size_t i = 0; i < ADDPR(binaryModSize); i++) {
 		auto patches = ADDPR(binaryMod)[i].patches;

@@ -1,6 +1,9 @@
 Shiki Changelog
 ==================
 
+#### v2.1.1
+- Added a workaround for iTunes crashes in 10.13 (`shikigva=16`)
+
 #### v2.1.0
 - Requires Lilu 1.2.0 or higher
 - Added hardware video decoding fix for SKL/KBL & NVIDIA (`shikigva=4`)
