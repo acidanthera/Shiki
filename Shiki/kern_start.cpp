@@ -16,7 +16,7 @@ enum ShikiGVAPatches {
 	AllowNonBGRA = 2,
 	ForceCompatibleRenderer = 4,
 	VDAExecutableWhitelist = 8,
-    KillAppleGVA = 16
+	KillAppleGVA = 16
 };
 
 // 32 bytes should be reasonable for a safe comparison
@@ -69,7 +69,7 @@ static void shikiNvidiaPatch(void *, KernelPatcher &) {
 
 				if (currOff != endOff && endOff - currOff > MaxPatchOff)
 					DBGLOG("shiki", "found pre or instructions at %lu (%02X %02X %02X %02X %02X %02X %02X)", currOff, gvaBuf[currOff+2],
-					       gvaBuf[currOff+3], gvaBuf[currOff+4], gvaBuf[currOff+5], gvaBuf[currOff+6], gvaBuf[currOff+7], gvaBuf[currOff+8]);
+						   gvaBuf[currOff+3], gvaBuf[currOff+4], gvaBuf[currOff+5], gvaBuf[currOff+6], gvaBuf[currOff+7], gvaBuf[currOff+8]);
 
 				else
 					currOff = endOff = 0;
@@ -163,14 +163,14 @@ static void shikiStart() {
 	bool leaveBGRASupport = true;
 	bool leaveNvidiaUnlock = true;
 	bool leaveExecutableWhiteList = true;
-    bool leaveAppleGVAAlone = true;
+	bool leaveAppleGVAAlone = true;
 	
 	if (PE_parse_boot_argn("shikigva", tmp, sizeof(tmp))) {
 		leaveForceAccelRenderer = !(tmp[0] & ForceOnlineRenderer);
 		leaveBGRASupport = !(tmp[0] & AllowNonBGRA);
 		leaveNvidiaUnlock = !(tmp[0] & ForceCompatibleRenderer);
 		leaveExecutableWhiteList = !(tmp[0] & VDAExecutableWhitelist);
-        leaveAppleGVAAlone = !(tmp[0] & KillAppleGVA);
+		leaveAppleGVAAlone = !(tmp[0] & KillAppleGVA);
 	}
 	
 	if (PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp))) {
@@ -190,9 +190,9 @@ static void shikiStart() {
 	
 	if (leaveBGRASupport)
 		disableSection(SectionBGRA);
-    
-    if (leaveAppleGVAAlone)
-        disableSection(SectionKILLGVA);
+
+	if (leaveAppleGVAAlone)
+		disableSection(SectionKILLGVA);
 
 	for (size_t i = 0; i < ADDPR(binaryModSize); i++) {
 		auto patches = ADDPR(binaryMod)[i].patches;
