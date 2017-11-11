@@ -8,6 +8,7 @@
 #include <Headers/plugin_start.hpp>
 #include <Headers/kern_api.hpp>
 #include <Headers/kern_file.hpp>
+#include <Headers/kern_iokit.hpp>
 
 #include "kern_resources.hpp"
 
@@ -24,6 +25,8 @@ static constexpr size_t NVPatchSize {32};
 static uint8_t nvPatchFind[NVPatchSize] {};
 static uint8_t nvPatchReplace[NVPatchSize] {};
 static UserPatcher::BinaryModPatch *nvPatch {nullptr};
+
+static bool autodetectIGPU {false};
 
 static void disableSection(uint32_t section) {
 	for (size_t i = 0; i < ADDPR(procInfoSize); i++) {
@@ -42,7 +45,27 @@ static void disableSection(uint32_t section) {
 	}
 }
 
-static void shikiNvidiaPatch(void *, KernelPatcher &) {
+static uint32_t getModernFrameId() {
+	uint32_t platform = 0;
+	const char *tree[] {"AppleACPIPCI", "IGPU"};
+	auto sect = WIOKit::findEntryByPrefix("/AppleACPIPlatformExpert", "PCI", gIOServicePlane);
+	for (size_t i = 0; sect && i < arrsize(tree); i++) {
+		sect = WIOKit::findEntryByPrefix(sect, tree[i], gIOServicePlane);
+		if (sect && i+1 == arrsize(tree)) {
+			if (WIOKit::getOSDataValue(sect, "AAPL,ig-platform-id", platform)) {
+				DBGLOG("audio", "found IGPU with ig-platform-id %08x", platform);
+				return platform;
+			} else {
+				SYSLOG("audio", "found IGPU with missing ig-platform-id, assuming old");
+			}
+		}
+	}
+
+	DBGLOG("audio", "failed to find IGPU ig-platform-id");
+	return platform;
+}
+
+static void shikiPatcherLoad(void *, KernelPatcher &) {
 	// We need to do magic here and prepare a patch for AppleGVA that would force
 	// the assumption that NVIDIA is compatible with SKL/KBL processors.
 
@@ -150,77 +173,95 @@ static void shikiNvidiaPatch(void *, KernelPatcher &) {
 		}
 
 		if (gvaBuf) Buffer::deleter(gvaBuf);
-	} else {
-		SYSLOG("shiki", "failed to find suitable nvpatch");
+	}
+
+	if (autodetectIGPU) {
+		auto frame = getModernFrameId();
+		DBGLOG("shiki", "detected igpu frame 0x%08x", frame);
+		// Older IGPUs (and invalid frames) get no default hacks
+		if (!frame)
+			disableSection(KillAppleGVA);
 	}
 }
 
 static void shikiStart() {
 	// Attempt to support fps.1_0 in Safari
-	char tmp[16];
-	bool patchStreamVideo = PE_parse_boot_argn("-shikifps", tmp, sizeof(tmp));
-	bool leaveForceAccelRenderer = true;
-	bool leaveBGRASupport = true;
-	bool leaveNvidiaUnlock = true;
-	bool leaveExecutableWhiteList = true;
-	bool leaveAppleGVAAlone = true;
+	int bootarg {0};
+	bool patchStreamVideo = PE_parse_boot_argn("-shikifps", &bootarg, sizeof(bootarg));
+	bool forceAccelRenderer = false;
+	bool allowNonBGRA = false;
+	bool forceNvidiaUnlock = false;
+	bool addExeWhiteList = false;
+	bool killAppleGVA = false;
 	
-	if (PE_parse_boot_argn("shikigva", tmp, sizeof(tmp))) {
-		leaveForceAccelRenderer = !(tmp[0] & ForceOnlineRenderer);
-		leaveBGRASupport = !(tmp[0] & AllowNonBGRA);
-		leaveNvidiaUnlock = !(tmp[0] & ForceCompatibleRenderer);
-		leaveExecutableWhiteList = !(tmp[0] & VDAExecutableWhitelist);
-		leaveAppleGVAAlone = !(tmp[0] & KillAppleGVA);
-	}
-	
-	if (PE_parse_boot_argn("-shikigva", tmp, sizeof(tmp))) {
-		SYSLOG("shiki", "-shikigva is deprecated use shikigva=1 instead");
-		leaveForceAccelRenderer = false;
+	if (PE_parse_boot_argn("shikigva", &bootarg, sizeof(bootarg))) {
+		forceAccelRenderer = bootarg & ForceOnlineRenderer;
+		allowNonBGRA       = bootarg & AllowNonBGRA;
+		forceNvidiaUnlock  = bootarg & ForceCompatibleRenderer;
+		addExeWhiteList    = bootarg & VDAExecutableWhitelist;
+		killAppleGVA       = bootarg & KillAppleGVA;
+	} else {
+		// By default enable iTunes hack for 10.13 and higher for Ivy+ IGPU
+		killAppleGVA = autodetectIGPU = getKernelVersion() >= KernelVersion::HighSierra;
+
+		if (PE_parse_boot_argn("-shikigva", &bootarg, sizeof(bootarg))) {
+			SYSLOG("shiki", "-shikigva is deprecated use shikigva=1 instead");
+			forceAccelRenderer = true;
+		}
 	}
 
-	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d gva %d", patchStreamVideo, !leaveForceAccelRenderer,
-		   !leaveBGRASupport, !leaveNvidiaUnlock, !leaveExecutableWhiteList, !leaveAppleGVAAlone);
+	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d gva %d", patchStreamVideo, forceAccelRenderer,
+		   allowNonBGRA, forceNvidiaUnlock, addExeWhiteList, killAppleGVA);
 
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
 		disableSection(SectionNSTREAM);
 	
-	if (leaveForceAccelRenderer)
+	if (!forceAccelRenderer)
 		disableSection(SectionOFFLINE);
 	
-	if (leaveBGRASupport)
+	if (!allowNonBGRA)
 		disableSection(SectionBGRA);
 
-	if (leaveAppleGVAAlone)
-		disableSection(SectionKILLGVA);
-
-	for (size_t i = 0; i < ADDPR(binaryModSize); i++) {
-		auto patches = ADDPR(binaryMod)[i].patches;
-		for (size_t j = 0; j < ADDPR(binaryMod)[i].count; j++) {
-			if (patches[j].section == SectionNVDA) {
-				nvPatch = &patches[j];
-				DBGLOG("shiki", "found nvidia patch at %lu:%lu with size %lu", i, j, nvPatch->size);
-				break;
+	// Do not enable until we are certain it works
+	bool requireNvidiaPatch = forceNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan;
+	if (requireNvidiaPatch) {
+		for (size_t i = 0; i < ADDPR(binaryModSize); i++) {
+			auto patches = ADDPR(binaryMod)[i].patches;
+			for (size_t j = 0; j < ADDPR(binaryMod)[i].count; j++) {
+				if (patches[j].section == SectionNVDA) {
+					nvPatch = &patches[j];
+					DBGLOG("shiki", "found nvidia patch at %lu:%lu with size %lu", i, j, nvPatch->size);
+					break;
+				}
 			}
+		}
+
+		if (nvPatch) {
+			nvPatch->section = SectionUnused;
+			nvPatch->find    = nvPatchFind;
+			nvPatch->replace = nvPatchReplace;
+			nvPatch->size    = NVPatchSize;
+		} else {
+			SYSLOG("shiki", "failed to find nvidia patch though requested");
+			requireNvidiaPatch = false;
 		}
 	}
 
-	bool nvPatchOk = false;
-	if (nvPatch && !leaveNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan) {
-		// Do not enable until we are certain it works
-		nvPatch->section = SectionUnused;
-		nvPatch->find    = nvPatchFind;
-		nvPatch->replace = nvPatchReplace;
-		nvPatch->size    = NVPatchSize;
-		auto err = lilu.onPatcherLoad(shikiNvidiaPatch);
+	bool patcherLoadOk = false;
+	if (requireNvidiaPatch || autodetectIGPU) {
+		auto err = lilu.onPatcherLoad(shikiPatcherLoad);
 		if (err == LiluAPI::Error::NoError)
-			nvPatchOk = true;
+			patcherLoadOk = true;
 		else
 			SYSLOG("shiki", "unable to attach to patcher load %d", err);
 	}
 
-	if (leaveExecutableWhiteList || !nvPatchOk)
+	if (!addExeWhiteList || !patcherLoadOk)
 		disableSection(SectionNVDA);
+
+	if (!killAppleGVA || (autodetectIGPU && !patcherLoadOk))
+		disableSection(SectionKILLGVA);
 
 	auto err = lilu.onProcLoad(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
 	if (err != LiluAPI::Error::NoError)

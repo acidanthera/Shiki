@@ -255,6 +255,7 @@
 				1C748C241C21952C0024EED2 /* Headers */,
 				1C748C251C21952C0024EED2 /* Resources */,
 				CE6BD31D1E4CE9C600DCB2D4 /* Frameworks */,
+				CE131D6C1FB72B420036C3A0 /* Archive */,
 			);
 			buildRules = (
 			);
@@ -272,7 +273,7 @@
 		1C748C1E1C21952C0024EED2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = vit9696;
 				TargetAttributes = {
 					1C32BDB41CDD485C0052FA40 = {
@@ -325,6 +326,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh \"${PROJECT_DIR}/ResourceConverter/generate.sh\"";
+		};
+		CE131D6C1FB72B420036C3A0 /* Archive */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Archive;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "cd \"${TARGET_BUILD_DIR}\"\n\ndist=(\"$FULL_PRODUCT_NAME\")\nif [ -d \"$DWARF_DSYM_FILE_NAME\" ]; then dist+=(\"$DWARF_DSYM_FILE_NAME\"); fi\n\narchive=\"${MODULE_VERSION} ($(echo $CONFIGURATION | tr /a-z/ /A-Z/)).zip\"\nrm -rf *.zip\nzip -qry \"${archive}\" \"${dist[@]}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

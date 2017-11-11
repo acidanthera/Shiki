@@ -3,6 +3,7 @@ Shiki Changelog
 
 #### v2.1.1
 - Added a workaround for iTunes crashes in 10.13 (`shikigva=16`)
+- Autoenabled iTunes crash workaround in 10.13 with properly configured Ivy+ IGPU
 
 #### v2.1.0
 - Requires Lilu 1.2.0 or higher
