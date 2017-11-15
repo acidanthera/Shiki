@@ -77,6 +77,7 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNSTREAM, PF::MatchExact },
 	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNVDA, PF::MatchExact },
 	{ "/Applications/Safari.app/Contents/MacOS/Safari", 46, SectionNVDA, PF::MatchExact },
+	{ "/System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService", 131, SectionNVDA, PF::MatchExact },
 	{ "/Final Cut Pro.app/Contents/MacOS/Final Cut Pro", 47, SectionNVDA, PF::MatchSuffix },
 	{ "/Motion.app/Contents/MacOS/Motion", 33, SectionNVDA, PF::MatchSuffix },
 	{ "/Compressor.app/Contents/MacOS/Compressor", 41, SectionNVDA, PF::MatchSuffix },
@@ -90,4 +91,4 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/VDADecoderChecker", 18, SectionNVDA, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {18};
+const size_t ADDPR(procInfoSize) {19};

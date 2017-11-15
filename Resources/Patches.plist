@@ -329,6 +329,12 @@
 		</dict>
 		<dict>
 			<key>Path</key>
+			<string>/System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService</string>
+			<key>Section</key>
+			<string>NVDA</string>
+		</dict>
+		<dict>
+			<key>Path</key>
 			<string>/Final Cut Pro.app/Contents/MacOS/Final Cut Pro</string>
 			<key>Section</key>
 			<string>NVDA</string>
