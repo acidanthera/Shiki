@@ -44,15 +44,16 @@ alignas(8) static const uint8_t patchBuf16[] { 0x68, 0x77, 0x65, 0x42, 0x47, 0x5
 alignas(8) static const uint8_t patchBuf17[] { 0x73, 0x77, 0x65, 0x42, 0x47, 0x52, 0x41, };
 alignas(8) static const uint8_t patchBuf18[] { 0x00, };
 alignas(8) static const uint8_t patchBuf19[] { 0x00, };
+alignas(8) static const uint8_t patchBuf20[] { 0x00, 0x6B, 0x65, 0x31, 0x00, };
+alignas(8) static const uint8_t patchBuf21[] { 0x00, 0x76, 0x65, 0x31, 0x00, };
+alignas(8) static const uint8_t patchBuf22[] { 0x66, 0x6F, 0x72, 0x63, 0x65, 0x42, 0x6F, 0x6F, 0x73, 0x74, 0x4F, 0x66, 0x66, };
+alignas(8) static const uint8_t patchBuf23[] { 0x6B, 0x65, 0x31, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, };
 static UserPatcher::BinaryModPatch patches2[] {
-	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 8, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
-	{ CPU_TYPE_X86_64, patchBuf16, patchBuf17, 7, 0, 2, UserPatcher::FileSegment::SegmentTextCstring, SectionBGRA },
+	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 8, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
+	{ CPU_TYPE_X86_64, patchBuf16, patchBuf17, 7, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBGRA },
 	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 1, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionNVDA },
-};
-alignas(8) static const uint8_t patchBuf20[] { 0x41, 0x70, 0x70, 0x6C, 0x65, 0x47, 0x56, 0x41, 0x2E, 0x66, 0x72, 0x61, 0x6D, 0x65, 0x77, 0x6F, 0x72, 0x6B, };
-alignas(8) static const uint8_t patchBuf21[] { 0x41, 0x70, 0x70, 0x6C, 0x65, 0x47, 0x56, 0x41, 0x2E, 0x64, 0x6F, 0x6E, 0x6F, 0x74, 0x77, 0x6F, 0x72, 0x6B, };
-static UserPatcher::BinaryModPatch patches3[] {
-	{ CPU_TYPE_X86_64, patchBuf20, patchBuf21, 18, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionKILLGVA },
+	{ CPU_TYPE_X86_64, patchBuf20, patchBuf21, 5, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionKEGVA },
+	{ CPU_TYPE_X86_64, patchBuf22, patchBuf23, 13, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBOOSTOFF },
 };
 
 // Mod section
@@ -60,18 +61,17 @@ static UserPatcher::BinaryModPatch patches3[] {
 UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 	{ "/System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox", patches0, 6 },
 	{ "/System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/CoreFP", patches1, 1 },
-	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 3 },
-	{ "/System/Library/Frameworks/MediaToolbox.framework/Versions/A/MediaToolbox", patches3, 1 },
+	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 5 },
 };
 
-const size_t ADDPR(binaryModSize) {4};
+const size_t ADDPR(binaryModSize) {3};
 
 // Process list
 using PF = UserPatcher::ProcInfo::ProcFlags;
 
 UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionNDRMI, PF::MatchExact },
-	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionKILLGVA, PF::MatchExact },
+	{ "/Applications/iTunes.app/Contents/MacOS/iTunes", 46, SectionKEGVA, PF::MatchExact },
 	{ "/Applications/QuickTime Player.app/Contents/MacOS/QuickTime Player", 66, SectionNDRMI, PF::MatchExact },
 	{ "/Applications/Safari.app/Contents/MacOS/Safari", 46, SectionNSTREAM, PF::MatchExact },
 	{ "/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent", 141, SectionNSTREAM, PF::MatchExact },

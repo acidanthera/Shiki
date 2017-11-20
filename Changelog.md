@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.1.3 (experimental)
+- Changed iTunes crash patch to a supposedly less destructive workaround
+- Added an ability to enable `forceBoostOff` on some mac models (`shikigva=32`)
 
 #### v2.1.2
 - Fixed HEVC decoding on 10.13 SKL/KBL & NVIDIA (thx Andrey1970 and all involved)

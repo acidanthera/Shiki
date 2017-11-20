@@ -28,5 +28,6 @@ enum : uint32_t {
 	SectionOFFLINE = 4,
 	SectionBGRA = 5,
 	SectionNVDA = 6,
-	SectionKILLGVA = 7,
+	SectionKEGVA = 7,
+	SectionBOOSTOFF = 8,
 };

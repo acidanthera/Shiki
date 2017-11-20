@@ -17,7 +17,8 @@ enum ShikiGVAPatches {
 	AllowNonBGRA = 2,
 	ForceCompatibleRenderer = 4,
 	VDAExecutableWhitelist = 8,
-	KillAppleGVA = 16
+	DisableHardwareKeyExchange = 16,
+	ForceBoostOff = 32
 };
 
 // 32 bytes should be reasonable for a safe comparison
@@ -180,7 +181,7 @@ static void shikiPatcherLoad(void *, KernelPatcher &) {
 		DBGLOG("shiki", "detected igpu frame 0x%08x", frame);
 		// Older IGPUs (and invalid frames) get no default hacks
 		if (!frame)
-			disableSection(KillAppleGVA);
+			disableSection(SectionKEGVA);
 	}
 }
 
@@ -192,26 +193,28 @@ static void shikiStart() {
 	bool allowNonBGRA = false;
 	bool forceNvidiaUnlock = false;
 	bool addExeWhiteList = false;
-	bool killAppleGVA = false;
+	bool killKeyExchange = false;
+	bool forceBoostOff = false;
 	
 	if (PE_parse_boot_argn("shikigva", &bootarg, sizeof(bootarg))) {
 		forceAccelRenderer = bootarg & ForceOnlineRenderer;
 		allowNonBGRA       = bootarg & AllowNonBGRA;
 		forceNvidiaUnlock  = bootarg & ForceCompatibleRenderer;
 		addExeWhiteList    = bootarg & VDAExecutableWhitelist;
-		killAppleGVA       = bootarg & KillAppleGVA;
+		killKeyExchange    = bootarg & DisableHardwareKeyExchange;
+		forceBoostOff      = bootarg & ForceBoostOff;
 	} else {
 		// By default enable iTunes hack for 10.13 and higher for Ivy+ IGPU
-		killAppleGVA = autodetectIGPU = getKernelVersion() >= KernelVersion::HighSierra;
+		killKeyExchange = autodetectIGPU = getKernelVersion() >= KernelVersion::HighSierra;
 
 		if (PE_parse_boot_argn("-shikigva", &bootarg, sizeof(bootarg))) {
-			SYSLOG("shiki", "-shikigva is deprecated use shikigva=1 instead");
+			SYSLOG("shiki", "-shikigva is deprecated use shikigva=%d instead", ForceOnlineRenderer);
 			forceAccelRenderer = true;
 		}
 	}
 
-	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d gva %d", patchStreamVideo, forceAccelRenderer,
-		   allowNonBGRA, forceNvidiaUnlock, addExeWhiteList, killAppleGVA);
+	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d ke1 %d boost %d", patchStreamVideo, forceAccelRenderer,
+		   allowNonBGRA, forceNvidiaUnlock, addExeWhiteList, killKeyExchange, forceBoostOff);
 
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
@@ -222,6 +225,9 @@ static void shikiStart() {
 	
 	if (!allowNonBGRA)
 		disableSection(SectionBGRA);
+
+	if (!forceBoostOff)
+		disableSection(SectionBOOSTOFF);
 
 	// Do not enable until we are certain it works
 	bool requireNvidiaPatch = forceNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan;
@@ -260,8 +266,8 @@ static void shikiStart() {
 	if (!addExeWhiteList || !patcherLoadOk)
 		disableSection(SectionNVDA);
 
-	if (!killAppleGVA || (autodetectIGPU && !patcherLoadOk))
-		disableSection(SectionKILLGVA);
+	if (!killKeyExchange || (autodetectIGPU && !patcherLoadOk))
+		disableSection(SectionKEGVA);
 
 	auto err = lilu.onProcLoad(ADDPR(procInfo), ADDPR(procInfoSize), nullptr, nullptr, ADDPR(binaryMod), ADDPR(binaryModSize));
 	if (err != LiluAPI::Error::NoError)

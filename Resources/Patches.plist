@@ -197,7 +197,7 @@
 					<key>Skip</key>
 					<integer>0</integer>
 					<key>Count</key>
-					<integer>2</integer>
+					<integer>1</integer>
 					<key>Section</key>
 					<string>OFFLINE</string>
 					<key>Segment</key>
@@ -215,7 +215,7 @@
 					<key>Skip</key>
 					<integer>0</integer>
 					<key>Count</key>
-					<integer>2</integer>
+					<integer>1</integer>
 					<key>Section</key>
 					<string>BGRA</string>
 					<key>Segment</key>
@@ -239,28 +239,39 @@
 					<key>Segment</key>
 					<string>TextText</string>
 				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>Path</key>
-			<string>/System/Library/Frameworks/MediaToolbox.framework/Versions/A/MediaToolbox</string>
-			<key>Patches</key>
-			<array>
 				<dict>
 					<key>Comment</key>
-					<string>AppleGVA.framework -&gt; AppleGVA.donotwork</string>
+					<string>Disable hardware keyserver encryption in AppleGVA (ke1 -&gt; re1)</string>
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>QXBwbGVHVkEuZnJhbWV3b3Jr</data>
+					<data>AGtlMQA=</data>
 					<key>Replace</key>
-					<data>QXBwbGVHVkEuZG9ub3R3b3Jr</data>
+					<data>AHZlMQA=</data>
 					<key>Skip</key>
 					<integer>0</integer>
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
-					<string>KILLGVA</string>
+					<string>KEGVA</string>
+					<key>Segment</key>
+					<string>TextCstring</string>
+				</dict>
+				<dict>
+					<key>Comment</key>
+					<string>forceBoostOff -&gt; ke1 (make forceBoostOff return true)</string>
+					<key>CPU</key>
+					<string>CPU_TYPE_X86_64</string>
+					<key>Find</key>
+					<data>Zm9yY2VCb29zdE9mZg==</data>
+					<key>Replace</key>
+					<data>a2UxAAAAAAAAAAAAAA==</data>
+					<key>Skip</key>
+					<integer>0</integer>
+					<key>Count</key>
+					<integer>1</integer>
+					<key>Section</key>
+					<string>BOOSTOFF</string>
 					<key>Segment</key>
 					<string>TextCstring</string>
 				</dict>
@@ -279,7 +290,7 @@
 			<key>Path</key>
 			<string>/Applications/iTunes.app/Contents/MacOS/iTunes</string>
 			<key>Section</key>
-			<string>KILLGVA</string>
+			<string>KEGVA</string>
 		</dict>
 		<dict>
 			<key>Path</key>
