@@ -86,9 +86,11 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/MacX Video Converter Pro.app/Contents/MacOS/MacX Video Converter Pro", 69, SectionNVDA, PF::MatchSuffix },
 	{ "/XviD4PSP.app/Contents/MacOS/XviD4PSP", 37, SectionNVDA, PF::MatchSuffix },
 	{ "/Opera.app/Contents/MacOS/Opera", 31, SectionNVDA, PF::MatchSuffix },
-	{ "/Firefox.app/Contents/MacOS/firefox-bin", 39, SectionNVDA, PF::MatchSuffix },
-	{ "/Firefox.app/Contents/MacOS/firefox", 35, SectionNVDA, PF::MatchSuffix },
+	{ "/Firefox.app/Contents/MacOS/firefox", 35, SectionNVDA, PF::MatchAny },
+	{ "/Slack.app/Contents/MacOS/Slack", 31, SectionNVDA, PF::MatchSuffix },
+	{ "/Visual Studio Code.app/Contents/MacOS/Electron", 47, SectionNVDA, PF::MatchSuffix },
+	{ "/Google Chrome.app/Contents/MacOS/Google Chrome", 47, SectionNVDA, PF::MatchSuffix },
 	{ "/VDADecoderChecker", 18, SectionNVDA, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {19};
+const size_t ADDPR(procInfoSize) {21};
