@@ -259,19 +259,19 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>forceBoostOff -&gt; ke1 (make forceBoostOff return true)</string>
+					<string>board-id -&gt; shiki-id (normally for iMac14,2)</string>
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
-					<data>Zm9yY2VCb29zdE9mZg==</data>
+					<data>Ym9hcmQtaWQA</data>
 					<key>Replace</key>
-					<data>a2UxAAAAAAAAAAAAAA==</data>
+					<data>c2hpa2ktaWQA</data>
 					<key>Skip</key>
 					<integer>0</integer>
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
-					<string>BOOSTOFF</string>
+					<string>BOARDID</string>
 					<key>Segment</key>
 					<string>TextCstring</string>
 				</dict>

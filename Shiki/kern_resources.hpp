@@ -29,5 +29,5 @@ enum : uint32_t {
 	SectionBGRA = 5,
 	SectionNVDA = 6,
 	SectionKEGVA = 7,
-	SectionBOOSTOFF = 8,
+	SectionBOARDID = 8,
 };

@@ -5,10 +5,12 @@
 //  Copyright © 2016-2017 vit9696. All rights reserved.
 //
 
+#include <Library/LegacyIOService.h>
 #include <Headers/plugin_start.hpp>
 #include <Headers/kern_api.hpp>
 #include <Headers/kern_file.hpp>
 #include <Headers/kern_iokit.hpp>
+#include <IOKit/IODeviceTreeSupport.h>
 
 #include "kern_resources.hpp"
 
@@ -18,7 +20,7 @@ enum ShikiGVAPatches {
 	ForceCompatibleRenderer = 4,
 	VDAExecutableWhitelist = 8,
 	DisableHardwareKeyExchange = 16,
-	ForceBoostOff = 32
+	ReplaceBoardID = 32
 };
 
 // 32 bytes should be reasonable for a safe comparison
@@ -28,6 +30,7 @@ static uint8_t nvPatchReplace[NVPatchSize] {};
 static UserPatcher::BinaryModPatch *nvPatch {nullptr};
 
 static bool autodetectIGPU {false};
+static char customBoardID[64] {};
 
 static void disableSection(uint32_t section) {
 	for (size_t i = 0; i < ADDPR(procInfoSize); i++) {
@@ -183,6 +186,17 @@ static void shikiPatcherLoad(void *, KernelPatcher &) {
 		if (!frame)
 			disableSection(SectionKEGVA);
 	}
+
+	if (customBoardID[0]) {
+		auto entry = IORegistryEntry::fromPath("/", gIODTPlane);
+		if (entry) {
+			DBGLOG("shiki", "changing shiki-id to %s", customBoardID);
+			entry->setProperty("shiki-id", OSData::withBytes(customBoardID, static_cast<uint32_t>(strlen(customBoardID)+1)));
+			entry->release();
+		} else {
+			SYSLOG("shiki", "failed to obtain iodt tree");
+		}
+	}
 }
 
 static void shikiStart() {
@@ -194,7 +208,7 @@ static void shikiStart() {
 	bool forceNvidiaUnlock = false;
 	bool addExeWhiteList = false;
 	bool killKeyExchange = false;
-	bool forceBoostOff = false;
+	bool replaceBoardID = false;
 	
 	if (PE_parse_boot_argn("shikigva", &bootarg, sizeof(bootarg))) {
 		forceAccelRenderer = bootarg & ForceOnlineRenderer;
@@ -202,7 +216,7 @@ static void shikiStart() {
 		forceNvidiaUnlock  = bootarg & ForceCompatibleRenderer;
 		addExeWhiteList    = bootarg & VDAExecutableWhitelist;
 		killKeyExchange    = bootarg & DisableHardwareKeyExchange;
-		forceBoostOff      = bootarg & ForceBoostOff;
+		replaceBoardID     = bootarg & ReplaceBoardID;
 	} else {
 		// By default enable iTunes hack for 10.13 and higher for Ivy+ IGPU
 		killKeyExchange = autodetectIGPU = getKernelVersion() >= KernelVersion::HighSierra;
@@ -213,8 +227,8 @@ static void shikiStart() {
 		}
 	}
 
-	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d ke1 %d boost %d", patchStreamVideo, forceAccelRenderer,
-		   allowNonBGRA, forceNvidiaUnlock, addExeWhiteList, killKeyExchange, forceBoostOff);
+	DBGLOG("shiki", "stream %d accel %d bgra %d nvidia %d/%d ke1 %d id %d", patchStreamVideo, forceAccelRenderer,
+		   allowNonBGRA, forceNvidiaUnlock, addExeWhiteList, killKeyExchange, replaceBoardID);
 
 	// Disable unused SectionFSTREAM
 	if (!patchStreamVideo)
@@ -226,8 +240,13 @@ static void shikiStart() {
 	if (!allowNonBGRA)
 		disableSection(SectionBGRA);
 
-	if (!forceBoostOff)
-		disableSection(SectionBOOSTOFF);
+	if (!replaceBoardID) {
+		disableSection(SectionBOARDID);
+	} else {
+		if (!PE_parse_boot_argn("shiki-id", customBoardID, sizeof(customBoardID)))
+			snprintf(customBoardID, sizeof(customBoardID), "Mac-27ADBB7B4CEE8E61"); // iMac14,2
+		DBGLOG("shiki", "Requesting %s board-id for gva", customBoardID);
+	}
 
 	// Do not enable until we are certain it works
 	bool requireNvidiaPatch = forceNvidiaUnlock && getKernelVersion() >= KernelVersion::ElCapitan;
@@ -255,7 +274,7 @@ static void shikiStart() {
 	}
 
 	bool patcherLoadOk = false;
-	if (requireNvidiaPatch || autodetectIGPU) {
+	if (requireNvidiaPatch || autodetectIGPU || replaceBoardID) {
 		auto err = lilu.onPatcherLoad(shikiPatcherLoad);
 		if (err == LiluAPI::Error::NoError)
 			patcherLoadOk = true;

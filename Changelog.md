@@ -1,10 +1,9 @@
 Shiki Changelog
 ==================
-#### v2.1.3 (experimental)
+#### v2.2.0
 - Changed iTunes crash patch to a supposedly less destructive workaround
-- Added an ability to enable `forceBoostOff` on some mac models (`shikigva=32`)
-
-#### v2.1.2
+- Added an ability to override mac model in AppleGVA (`shikigva=32`)
+- Added an argument to set custom mac model (`shiki-id=<board-id>` defaults to `iMac14,2`)
 - Fixed HEVC decoding on 10.13 SKL/KBL & NVIDIA (thx Andrey1970 and all involved)
 
 #### v2.1.1

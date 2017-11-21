@@ -46,14 +46,14 @@ alignas(8) static const uint8_t patchBuf18[] { 0x00, };
 alignas(8) static const uint8_t patchBuf19[] { 0x00, };
 alignas(8) static const uint8_t patchBuf20[] { 0x00, 0x6B, 0x65, 0x31, 0x00, };
 alignas(8) static const uint8_t patchBuf21[] { 0x00, 0x76, 0x65, 0x31, 0x00, };
-alignas(8) static const uint8_t patchBuf22[] { 0x66, 0x6F, 0x72, 0x63, 0x65, 0x42, 0x6F, 0x6F, 0x73, 0x74, 0x4F, 0x66, 0x66, };
-alignas(8) static const uint8_t patchBuf23[] { 0x6B, 0x65, 0x31, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, };
+alignas(8) static const uint8_t patchBuf22[] { 0x62, 0x6F, 0x61, 0x72, 0x64, 0x2D, 0x69, 0x64, 0x00, };
+alignas(8) static const uint8_t patchBuf23[] { 0x73, 0x68, 0x69, 0x6B, 0x69, 0x2D, 0x69, 0x64, 0x00, };
 static UserPatcher::BinaryModPatch patches2[] {
 	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 8, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
 	{ CPU_TYPE_X86_64, patchBuf16, patchBuf17, 7, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBGRA },
 	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 1, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionNVDA },
 	{ CPU_TYPE_X86_64, patchBuf20, patchBuf21, 5, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionKEGVA },
-	{ CPU_TYPE_X86_64, patchBuf22, patchBuf23, 13, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBOOSTOFF },
+	{ CPU_TYPE_X86_64, patchBuf22, patchBuf23, 9, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBOARDID },
 };
 
 // Mod section
