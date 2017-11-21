@@ -6,7 +6,8 @@ Shiki Changelog
 - Added an argument to set custom mac model (`shiki-id=<board-id>` defaults to `iMac14,2`)
 - Fixed HEVC decoding on 10.13 SKL/KBL & NVIDIA (thx Andrey1970 and all involved)
 - Added more processes to the temporary 10.13 NVIDIA whitelist (Chrome, Slack, VS Code)
-Note: `#ignore-gpu-blacklist` is necessary to be enabled in `chrome://flags` (see #13)
+
+Note: `#ignore-gpu-blacklist` is necessary to be enabled in `chrome://flags` (see [#13](https://github.com/vit9696/Shiki/issues/13))
 
 #### v2.1.1
 - Added a workaround for iTunes crashes in 10.13 (`shikigva=16`)
