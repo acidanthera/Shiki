@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.2.1
+- Added DaVinci Resolve and mpv to NVIDIA whitelist
+
 #### v2.2.0
 - Changed iTunes crash patch to a supposedly less destructive workaround
 - Added an ability to override mac model in AppleGVA (`shikigva=32`)
