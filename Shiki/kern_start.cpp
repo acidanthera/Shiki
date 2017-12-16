@@ -245,7 +245,7 @@ static void shikiStart() {
 	} else {
 		if (!PE_parse_boot_argn("shiki-id", customBoardID, sizeof(customBoardID)))
 			snprintf(customBoardID, sizeof(customBoardID), "Mac-27ADBB7B4CEE8E61"); // iMac14,2
-		DBGLOG("shiki", "Requesting %s board-id for gva", customBoardID);
+		DBGLOG("shiki", "requesting %s board-id for gva", customBoardID);
 	}
 
 	// Do not enable until we are certain it works
