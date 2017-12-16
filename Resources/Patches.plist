@@ -449,6 +449,14 @@
 			<string>NVDA</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
+		<dict>
+			<key>Path</key>
+			<string>/DaVinci Resolve.app/Contents/MacOS/Resolve</string>
+			<key>Section</key>
+			<string>NVDA</string>
+			<key>Flags</key>
+			<string>PF::MatchSuffix</string>
+		</dict>
 		</dict>
 	</array>
 </dict>
