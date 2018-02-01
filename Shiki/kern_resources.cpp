@@ -93,6 +93,9 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/VDADecoderChecker", 18, SectionNVDA, PF::MatchSuffix },
 	{ "/DaVinci Resolve.app/Contents/MacOS/Resolve", 43, SectionNVDA, PF::MatchSuffix },
 	{ "/bin/mpv", 8, SectionNVDA, PF::MatchSuffix },
+	{ "/Applications/FaceTime.app/Contents/MacOS/FaceTime", 50, SectionNVDA, PF::MatchExact },
+	{ "/Live Screen Capture.app/Contents/MacOS/Live Screen Capture", 59, SectionNVDA, PF::MatchSuffix },
+	{ "/iMovie.app/Contents/MacOS/iMovie", 33, SectionNVDA, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {23};
+const size_t ADDPR(procInfoSize) {26};
