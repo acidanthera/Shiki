@@ -2,6 +2,7 @@ Shiki Changelog
 ==================
 #### v2.2.1
 - Added DaVinci Resolve and mpv to NVIDIA whitelist
+- Added FaceTime, iMovie, and Live Screen Capture to NVIDIA whitelist
 
 #### v2.2.0
 - Changed iTunes crash patch to a supposedly less destructive workaround

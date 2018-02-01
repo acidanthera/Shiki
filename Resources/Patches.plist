@@ -466,6 +466,28 @@
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/Applications/FaceTime.app/Contents/MacOS/FaceTime</string>
+			<key>Section</key>
+			<string>NVDA</string>
+		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/Live Screen Capture.app/Contents/MacOS/Live Screen Capture</string>
+			<key>Section</key>
+			<string>NVDA</string>
+			<key>Flags</key>
+			<string>PF::MatchSuffix</string>
+		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/iMovie.app/Contents/MacOS/iMovie</string>
+			<key>Section</key>
+			<string>NVDA</string>
+			<key>Flags</key>
+			<string>PF::MatchSuffix</string>
+		</dict>
 	</array>
 </dict>
 </plist>
