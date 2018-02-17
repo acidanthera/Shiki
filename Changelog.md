@@ -1,5 +1,11 @@
 Shiki Changelog
 ==================
+#### v2.2.2
+- Improved compatible renderer patch to support Ivy and Sandy CPUs with AMD/NVIDIA
+- Changed `-shikifps` to `shikigva=64`
+
+Note: all the `shikigva` bits are now fully described [here](https://github.com/vit9696/Shiki/blob/master/Shiki/kern_start.cpp#L18).
+
 #### v2.2.1
 - Added DaVinci Resolve and mpv to NVIDIA whitelist
 - Added FaceTime, iMovie, and Live Screen Capture to NVIDIA whitelist

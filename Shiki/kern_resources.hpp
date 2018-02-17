@@ -22,12 +22,13 @@ extern const size_t ADDPR(procInfoSize);
 
 enum : uint32_t {
 	SectionUnused = 0,
-	SectionNDRMI = 1,
-	SectionNSTREAM = 2,
-	SectionFCPUID = 3,
-	SectionOFFLINE = 4,
-	SectionBGRA = 5,
-	SectionNVDA = 6,
-	SectionKEGVA = 7,
-	SectionBOARDID = 8,
+	SectionOFFLINE = 1,
+	SectionFCPUID = 2,
+	SectionNDRMI = 3,
+	SectionBGRA = 4,
+	SectionBOARDID = 5,
+	SectionNSTREAM = 6,
+	SectionCOMPATRENDERER = 7,
+	SectionKEGVA = 8,
+	SectionWHITELIST = 9,
 };

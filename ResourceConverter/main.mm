@@ -102,28 +102,17 @@ static NSString *generatePatchEntries(NSString *file, NSArray *patches) {
 	return @"nullptr, 0";
 }
 
-static void generateMods(NSString *file, NSString *header, NSArray *modInfos) {
-	auto sections = [[[NSMutableDictionary alloc] init] autorelease];
-	auto sectionList = [[[NSMutableString alloc] initWithUTF8String:"\n// Section list\n\nenum : uint32_t {\n"] autorelease];
-	size_t sectionIndex = 1;
+static void generateMods(NSString *file, NSString *header, NSArray *modInfos, NSMutableDictionary *sections) {
 
-	[sectionList appendString:@"\tSectionUnused = 0,\n"];
+
 	for (NSDictionary *entry in modInfos) {
 		if ([entry objectForKey:@"Disable"])
 			continue;
 		
 		NSArray *patches = [entry objectForKey:@"Patches"];
-		for (NSDictionary *patch in patches) {
-			if (![sections objectForKey:[patch objectForKey:@"Section"]]) {
-				[sectionList appendFormat:@"\tSection%@ = %lu,\n", [patch objectForKey:@"Section"], sectionIndex];
-				[sections setObject:@"ok" forKey:[patch objectForKey:@"Section"]];
-				sectionIndex++;
-			}
-		}
+		for (NSDictionary *patch in patches)
+			[sections setObject:@"ok" forKey:[patch objectForKey:@"Section"]];
 	}
-	
-	[sectionList appendString:@"};\n"];
-	appendFile(header, sectionList);
 	
 	appendFile(file, @"\n// Patch section\n\n");
 	
@@ -148,7 +137,7 @@ static void generateMods(NSString *file, NSString *header, NSArray *modInfos) {
 	appendFile(file, modSection);
 }
 
-static void generateComparison(NSString *file, NSArray *binaries) {
+static void generateComparison(NSString *file, NSArray *binaries, NSMutableDictionary *sections) {
 	auto procSection = [[[NSMutableString alloc] initWithUTF8String:"\n// Process list\n"
 						 "using PF = UserPatcher::ProcInfo::ProcFlags;\n\n"] autorelease];
 	NSUInteger minProcLength {PATH_MAX};
@@ -159,6 +148,8 @@ static void generateComparison(NSString *file, NSArray *binaries) {
 	for (NSDictionary *entry in binaries) {
 		if ([entry objectForKey:@"Disable"])
 			continue;
+
+		[sections setObject:@"ok" forKey:[entry objectForKey:@"Section"]];
 		
 		auto len = [[entry objectForKey:@"Path"] length];
 		NSString *flags = [entry objectForKey:@"Flags"];
@@ -196,10 +187,19 @@ int main(int argc, const char * argv[]) {
 		// Create a file
 		[[NSFileManager defaultManager] createFileAtPath:outputCpp contents:nil attributes:nil];
 		[[NSFileManager defaultManager] createFileAtPath:outputHpp contents:nil attributes:nil];
-		
+
+		auto sections = [[[NSMutableDictionary alloc] init] autorelease];
+
 		appendFile(outputCpp, ResourceHeader);
 		appendFile(outputHpp, ResourcePrivHeader);
-		generateMods(outputCpp, outputHpp, [patches objectForKey:@"Patches"]);
-		generateComparison(outputCpp, [patches objectForKey:@"Processes"]);
+		generateMods(outputCpp, outputHpp, [patches objectForKey:@"Patches"], sections);
+		generateComparison(outputCpp, [patches objectForKey:@"Processes"], sections);
+
+		auto sectionList = [[[NSMutableString alloc] initWithUTF8String:"\n// Section list\n\nenum : uint32_t {\n\tSectionUnused = 0,\n"] autorelease];
+		size_t sectionIndex = 1;
+		for (NSString *entry in sections)
+			[sectionList appendFormat:@"\tSection%@ = %lu,\n", entry, sectionIndex++];
+		[sectionList appendString:@"};\n"];
+		appendFile(outputHpp, sectionList);
 	}
 }
