@@ -115,11 +115,11 @@ static bool shikiSetCompatibleRendererPatch() {
 
 	if (getKernelVersion() >= KernelVersion::Sierra) {
 		compPatch->find = sierraPatchFind;
-		compPatch->find = sierraPatchReplace;
+		compPatch->replace = sierraPatchReplace;
 		compPatch->size = sizeof(sierraPatchFind);
 	} else {
 		compPatch->find = yosemitePatchFind;
-		compPatch->find = yosemitePatchReplace;
+		compPatch->replace = yosemitePatchReplace;
 		compPatch->size = sizeof(yosemitePatchFind);
 	}
 
@@ -141,20 +141,20 @@ static bool shikiSetCompatibleRendererPatch() {
 	// This patch makes AppleGVA believe that we use Haswell, which is not restricted to any modern GPU
 	auto generation = CPUInfo::getGeneration();
 	if (generation == CPUInfo::CpuGeneration::SandyBridge) {
-		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080000 - 0x1080004);
-		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080000 - 0x1080004);
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080000);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080000);
 		return true;
 	} else if (generation == CPUInfo::CpuGeneration::IvyBridge) {
-		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080002 - 0x1080004);
-		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080002 - 0x1080004);
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080002);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080002);
 		return true;
 	} else if (generation == CPUInfo::CpuGeneration::Skylake) {
-		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080010 - 0x1080004);
-		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080010 - 0x1080004);
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080010);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080010);
 		return true;
 	} else if (generation == CPUInfo::CpuGeneration::KabyLake) {
-		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080020 - 0x1080004);
-		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080020 - 0x1080004);
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080020);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080020);
 		return true;
 	}
 
