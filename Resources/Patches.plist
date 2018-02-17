@@ -223,7 +223,7 @@
 				</dict>
 				<dict>
 					<key>Comment</key>
-					<string>Unlock NVIDIA acceleration for SKL/KBL (see shikiNvidiaPatch)</string>
+					<string>Unlock acceleration for SNB/SKL/KBL+NVIDIA and IVY+AMD</string>
 					<key>CPU</key>
 					<string>CPU_TYPE_X86_64</string>
 					<key>Find</key>
@@ -235,7 +235,7 @@
 					<key>Count</key>
 					<integer>1</integer>
 					<key>Section</key>
-					<string>NVDA</string>
+					<string>COMPATRENDERER</string>
 					<key>Segment</key>
 					<string>TextText</string>
 				</dict>
@@ -330,25 +330,25 @@
 			<key>Path</key>
 			<string>/System/Library/Frameworks/WebKit.framework/Versions/A/XPCServices/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 		</dict>
 		<dict>
 			<key>Path</key>
 			<string>/Applications/Safari.app/Contents/MacOS/Safari</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 		</dict>
 		<dict>
 			<key>Path</key>
 			<string>/System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 		</dict>
 		<dict>
 			<key>Path</key>
 			<string>/Final Cut Pro.app/Contents/MacOS/Final Cut Pro</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -356,7 +356,7 @@
 			<key>Path</key>
 			<string>/Motion.app/Contents/MacOS/Motion</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -364,7 +364,7 @@
 			<key>Path</key>
 			<string>/Compressor.app/Contents/MacOS/Compressor</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -372,7 +372,7 @@
 			<key>Path</key>
 			<string>/IINA.app/Contents/MacOS/IINA</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -380,7 +380,7 @@
 			<key>Path</key>
 			<string>/VLC.app/Contents/MacOS/VLC</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -388,7 +388,7 @@
 			<key>Path</key>
 			<string>/MacX Video Converter Pro.app/Contents/MacOS/MacX Video Converter Pro</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -396,7 +396,7 @@
 			<key>Path</key>
 			<string>/XviD4PSP.app/Contents/MacOS/XviD4PSP</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -404,7 +404,7 @@
 			<key>Path</key>
 			<string>/Opera.app/Contents/MacOS/Opera</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -414,7 +414,7 @@
 			<key>Path</key>
 			<string>/Firefox.app/Contents/MacOS/firefox</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchAny</string>
 		</dict>
@@ -422,7 +422,7 @@
 			<key>Path</key>
 			<string>/Slack.app/Contents/MacOS/Slack</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -430,7 +430,7 @@
 			<key>Path</key>
 			<string>/Visual Studio Code.app/Contents/MacOS/Electron</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -438,7 +438,7 @@
 			<key>Path</key>
 			<string>/Google Chrome.app/Contents/MacOS/Google Chrome</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -446,7 +446,7 @@
 			<key>Path</key>
 			<string>/VDADecoderChecker</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -454,7 +454,7 @@
 			<key>Path</key>
 			<string>/DaVinci Resolve.app/Contents/MacOS/Resolve</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -462,7 +462,7 @@
 			<key>Path</key>
 			<string>/bin/mpv</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -470,13 +470,13 @@
 			<key>Path</key>
 			<string>/Applications/FaceTime.app/Contents/MacOS/FaceTime</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 		</dict>
 		<dict>
 			<key>Path</key>
 			<string>/Live Screen Capture.app/Contents/MacOS/Live Screen Capture</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
@@ -484,7 +484,7 @@
 			<key>Path</key>
 			<string>/iMovie.app/Contents/MacOS/iMovie</string>
 			<key>Section</key>
-			<string>NVDA</string>
+			<string>WHITELIST</string>
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
