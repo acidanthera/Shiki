@@ -145,8 +145,10 @@ static bool shikiSetCompatibleRendererPatch() {
 		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080000);
 		return true;
 	} else if (generation == CPUInfo::CpuGeneration::IvyBridge) {
-		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080002);
-		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080002);
+		// For whatever reason on GA-Z77-DS3H with i7 3770k and Sapphire Radeon R9 280X attempting to
+		// use Haswell-like patch ends in crashes in 10.12.6. Sandy patch works everywhere.
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080000 - 0x1080002);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080000 - 0x1080002);
 		return true;
 	} else if (generation == CPUInfo::CpuGeneration::Skylake) {
 		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080010);
