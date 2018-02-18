@@ -1,5 +1,9 @@
 Shiki Changelog
 ==================
+#### v2.2.3
+- Fixed a rare crash when IGPU was not renamed
+- Fixed a rare crash when patching AppleGVA for Ivy Bridge/AMD compatibility
+
 #### v2.2.2
 - Improved compatible renderer patch to support Ivy and Sandy CPUs with AMD/NVIDIA
 - Changed `-shikifps` to `shikigva=64`
