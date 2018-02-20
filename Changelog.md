@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.2.4
+- Added an AppleGVA patch to fix Sandy Bridge accelerator name (`shikigva=128`)
+
 #### v2.2.3
 - Fixed a rare crash when IGPU was not renamed
 - Fixed a rare crash when patching AppleGVA for Ivy Bridge/AMD compatibility
