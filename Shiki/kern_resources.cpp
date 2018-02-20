@@ -48,12 +48,15 @@ alignas(8) static const uint8_t patchBuf20[] { 0x00, 0x6B, 0x65, 0x31, 0x00, };
 alignas(8) static const uint8_t patchBuf21[] { 0x00, 0x76, 0x65, 0x31, 0x00, };
 alignas(8) static const uint8_t patchBuf22[] { 0x62, 0x6F, 0x61, 0x72, 0x64, 0x2D, 0x69, 0x64, 0x00, };
 alignas(8) static const uint8_t patchBuf23[] { 0x73, 0x68, 0x69, 0x6B, 0x69, 0x2D, 0x69, 0x64, 0x00, };
+alignas(8) static const uint8_t patchBuf24[] { 0x49, 0x6E, 0x74, 0x65, 0x6C, 0x41, 0x63, 0x63, 0x65, 0x6C, 0x65, 0x72, 0x61, 0x74, 0x6F, 0x72, };
+alignas(8) static const uint8_t patchBuf25[] { 0x47, 0x65, 0x6E, 0x36, 0x41, 0x63, 0x63, 0x65, 0x6C, 0x65, 0x72, 0x61, 0x74, 0x6F, 0x72, 0x00, };
 static UserPatcher::BinaryModPatch patches2[] {
 	{ CPU_TYPE_X86_64, patchBuf14, patchBuf15, 8, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionOFFLINE },
 	{ CPU_TYPE_X86_64, patchBuf16, patchBuf17, 7, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBGRA },
 	{ CPU_TYPE_X86_64, patchBuf18, patchBuf19, 1, 0, 1, UserPatcher::FileSegment::SegmentTextText, SectionCOMPATRENDERER },
 	{ CPU_TYPE_X86_64, patchBuf20, patchBuf21, 5, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionKEGVA },
 	{ CPU_TYPE_X86_64, patchBuf22, patchBuf23, 9, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionBOARDID },
+	{ CPU_TYPE_X86_64, patchBuf24, patchBuf25, 16, 0, 1, UserPatcher::FileSegment::SegmentTextCstring, SectionSNBPLUGIN },
 };
 
 // Mod section
@@ -61,7 +64,7 @@ static UserPatcher::BinaryModPatch patches2[] {
 UserPatcher::BinaryModInfo ADDPR(binaryMod)[] {
 	{ "/System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox", patches0, 6 },
 	{ "/System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/CoreFP", patches1, 1 },
-	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 5 },
+	{ "/System/Library/PrivateFrameworks/AppleGVA.framework/Versions/A/AppleGVA", patches2, 6 },
 };
 
 const size_t ADDPR(binaryModSize) {3};
