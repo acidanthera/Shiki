@@ -97,8 +97,9 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/DaVinci Resolve.app/Contents/MacOS/Resolve", 43, SectionWHITELIST, PF::MatchSuffix },
 	{ "/bin/mpv", 8, SectionWHITELIST, PF::MatchSuffix },
 	{ "/Applications/FaceTime.app/Contents/MacOS/FaceTime", 50, SectionWHITELIST, PF::MatchExact },
+	{ "/usr/libexec/AirPlayXPCHelper", 29, SectionWHITELIST, PF::MatchExact },
 	{ "/Live Screen Capture.app/Contents/MacOS/Live Screen Capture", 59, SectionWHITELIST, PF::MatchSuffix },
 	{ "/iMovie.app/Contents/MacOS/iMovie", 33, SectionWHITELIST, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {26};
+const size_t ADDPR(procInfoSize) {27};
