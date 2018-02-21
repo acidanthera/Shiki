@@ -492,6 +492,12 @@
 		</dict>
 		<dict>
 			<key>Path</key>
+			<string>/usr/libexec/AirPlayXPCHelper</string>
+			<key>Section</key>
+			<string>WHITELIST</string>
+		</dict>
+		<dict>
+			<key>Path</key>
 			<string>/Live Screen Capture.app/Contents/MacOS/Live Screen Capture</string>
 			<key>Section</key>
 			<string>WHITELIST</string>
