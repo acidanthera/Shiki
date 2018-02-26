@@ -47,8 +47,9 @@ enum ShikiGVAPatches {
 	// Disable hardware-accelerated FairPlay support in iTunes to fix crashes in 10.13.
 	// While this breaks streaming, it is currently the only way to workaround iTunes crashes in 10.13
 	// when one has IGPU installed.
-	// This is the only bit that is enabled automatically on 10.13~10.13.3 if shikigva is *NOT* passed
-	// via boot-args. Apple fixed this bug as of 10.13.4 Developer Beta 3.
+	// This is the only bit that is enabled automatically on 10.13 and newer if shikigva is *NOT* passed
+	// via boot-args. Apple supposedly fixed this bug as of 10.13.4 Developer Beta 3, but some users
+	// still report crashes, so we will have it on for now.
 	DisableHardwareKeyExchange = 16,
 	// Replace board-id used by AppleGVA by a different board-id.
 	// Sometimes it is feasible to use different GPU acceleration settings from the main mac model.
@@ -131,8 +132,8 @@ static bool shikiSetCompatibleRendererPatch() {
 	}
 
 	// Here are all the currently valid IOVARendererID values:
-	// 0x1080000 — Sandy Bridge
-	// 0x1080001 — Sandy Bridge (not used by the drivers)
+	// 0x1080000 — Sandy Bridge (AppleIntelFramebuffer)
+	// 0x1080001 — Sandy Bridge (Gen6Accelerator)
 	// 0x1080002 — Ivy Bridge
 	// 0x1080004 — Haswell
 	// 0x1080008 — Broadwell
@@ -148,8 +149,8 @@ static bool shikiSetCompatibleRendererPatch() {
 	// This patch makes AppleGVA believe that we use Haswell, which is not restricted to any modern GPU
 	auto generation = CPUInfo::getGeneration();
 	if (generation == CPUInfo::CpuGeneration::SandyBridge) {
-		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080000);
-		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080000);
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080001);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080001);
 		return true;
 	} else if (generation == CPUInfo::CpuGeneration::IvyBridge) {
 		// For whatever reason on GA-Z77-DS3H with i7 3770k and Sapphire Radeon R9 280X attempting to
@@ -211,8 +212,8 @@ static void shikiStart() {
 		unlockFP10Streaming     = bootarg & UnlockFP10Streaming;
 		fixSandyBridgeClassName = bootarg & FixSandyBridgeClassName;
 	} else {
-		// By default enable iTunes hack on 10.13~10.13.3 for Sandy+ IGPUs
-		disableKeyExchange = autodetectIGPU = getKernelVersion() == KernelVersion::HighSierra && getKernelMinorVersion() <= 4;
+		// By default enable iTunes hack on 10.13+ for Sandy+ IGPUs
+		disableKeyExchange = autodetectIGPU = getKernelVersion() >= KernelVersion::HighSierra;
 
 		if (PE_parse_boot_argn("-shikigva", &bootarg, sizeof(bootarg))) {
 			SYSLOG("shiki", "-shikigva is deprecated use shikigva %d bit instead", ForceOnlineRenderer);
@@ -264,7 +265,7 @@ static void shikiStart() {
 	// Schedule onPatcherLoad if we need to autodetect IGPU or to set a custom board-id
 	if (autodetectIGPU || replaceBoardID) {
 		auto err = lilu.onPatcherLoad(shikiPatcherLoad);
-		if (err == LiluAPI::Error::NoError)
+		if (err != LiluAPI::Error::NoError)
 			SYSLOG("shiki", "unable to attach to patcher load %d", err);
 	}
 
