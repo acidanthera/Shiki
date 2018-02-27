@@ -100,9 +100,10 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/Applications/FaceTime.app/Contents/MacOS/FaceTime", 50, SectionWHITELIST, PF::MatchExact },
 	{ "/Applications/Photos.app/Contents/MacOS/Photos", 46, SectionWHITELIST, PF::MatchExact },
 	{ "/System/Library/CoreServices/cloudphotosd.app/Contents/MacOS/cloudphotosd", 73, SectionWHITELIST, PF::MatchExact },
+	{ "/System/Library/Frameworks/Quartz.framework/Versions/A/Frameworks/QuickLookUI.framework/Versions/A/XPCServices/QuickLookUIService.xpc/Contents/MacOS/QuickLookUIService", 167, SectionWHITELIST, PF::MatchExact },
 	{ "/usr/libexec/AirPlayXPCHelper", 29, SectionWHITELIST, PF::MatchExact },
 	{ "/Live Screen Capture.app/Contents/MacOS/Live Screen Capture", 59, SectionWHITELIST, PF::MatchSuffix },
 	{ "/iMovie.app/Contents/MacOS/iMovie", 33, SectionWHITELIST, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {30};
+const size_t ADDPR(procInfoSize) {31};
