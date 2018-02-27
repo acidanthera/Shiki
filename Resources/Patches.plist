@@ -512,6 +512,12 @@
 		</dict>
 		<dict>
 			<key>Path</key>
+			<string>/System/Library/Frameworks/Quartz.framework/Versions/A/Frameworks/QuickLookUI.framework/Versions/A/XPCServices/QuickLookUIService.xpc/Contents/MacOS/QuickLookUIService</string>
+			<key>Section</key>
+			<string>WHITELIST</string>
+		</dict>
+		<dict>
+			<key>Path</key>
 			<string>/usr/libexec/AirPlayXPCHelper</string>
 			<key>Section</key>
 			<string>WHITELIST</string>
