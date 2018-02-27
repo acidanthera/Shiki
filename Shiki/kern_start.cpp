@@ -231,18 +231,17 @@ static void shikiPatcherLoad(void *, KernelPatcher &) {
 			}
 		}
 
-		bool disableWhitelist = false;
-		bool disableCompatRenderer = false;
-		if (hasExternalNVIDIA && cpuGeneration != CPUInfo::CpuGeneration::Broadwell &&
-			cpuGeneration != CPUInfo::CpuGeneration::Skylake &&
-			cpuGeneration != CPUInfo::CpuGeneration::KabyLake) {
-			disableCompatRenderer = true;
-			if (cpuGeneration != CPUInfo::CpuGeneration::SandyBridge)
-				disableWhitelist = true;
-		} else if (hasExternalAMD && cpuGeneration != CPUInfo::CpuGeneration::IvyBridge) {
-			disableCompatRenderer = true;
-			if (cpuGeneration != CPUInfo::CpuGeneration::SandyBridge)
-				disableWhitelist = true;
+		bool disableWhitelist = cpuGeneration != CPUInfo::CpuGeneration::SandyBridge;
+		bool disableCompatRenderer = true;
+		if (hasExternalNVIDIA && (cpuGeneration == CPUInfo::CpuGeneration::SandyBridge ||
+			cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
+			cpuGeneration == CPUInfo::CpuGeneration::Skylake ||
+			cpuGeneration == CPUInfo::CpuGeneration::KabyLake)) {
+			disableCompatRenderer = false;
+			disableWhitelist = false;
+		} else if (hasExternalAMD && cpuGeneration == CPUInfo::CpuGeneration::IvyBridge) {
+			disableCompatRenderer = false;
+			disableWhitelist = false;
 		}
 
 		if (disableCompatRenderer)
@@ -355,7 +354,7 @@ static void shikiStart() {
 		disableSection(SectionSNBPLUGIN);
 
 	// Schedule onPatcherLoad if we need to autodetect IGPU or to set a custom board-id
-	if (autodetectIGPU || replaceBoardID) {
+	if (autodetectIGPU || autodetectGFX || replaceBoardID) {
 		auto err = lilu.onPatcherLoad(shikiPatcherLoad);
 		if (err != LiluAPI::Error::NoError)
 			SYSLOG("shiki", "unable to attach to patcher load %d", err);
