@@ -95,11 +95,14 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/Google Chrome.app/Contents/MacOS/Google Chrome", 47, SectionWHITELIST, PF::MatchSuffix },
 	{ "/VDADecoderChecker", 18, SectionWHITELIST, PF::MatchSuffix },
 	{ "/DaVinci Resolve.app/Contents/MacOS/Resolve", 43, SectionWHITELIST, PF::MatchSuffix },
-	{ "/bin/mpv", 8, SectionWHITELIST, PF::MatchSuffix },
+	{ "/mpv", 4, SectionWHITELIST, PF::MatchSuffix },
+	{ "/ffmpeg", 7, SectionWHITELIST, PF::MatchSuffix },
 	{ "/Applications/FaceTime.app/Contents/MacOS/FaceTime", 50, SectionWHITELIST, PF::MatchExact },
+	{ "/Applications/Photos.app/Contents/MacOS/Photos", 46, SectionWHITELIST, PF::MatchExact },
+	{ "/System/Library/CoreServices/cloudphotosd.app/Contents/MacOS/cloudphotosd", 73, SectionWHITELIST, PF::MatchExact },
 	{ "/usr/libexec/AirPlayXPCHelper", 29, SectionWHITELIST, PF::MatchExact },
 	{ "/Live Screen Capture.app/Contents/MacOS/Live Screen Capture", 59, SectionWHITELIST, PF::MatchSuffix },
 	{ "/iMovie.app/Contents/MacOS/iMovie", 33, SectionWHITELIST, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {27};
+const size_t ADDPR(procInfoSize) {30};
