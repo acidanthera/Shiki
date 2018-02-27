@@ -2,7 +2,11 @@ Shiki Changelog
 ==================
 #### v2.2.4
 - Added an AppleGVA patch to fix Sandy Bridge accelerator name (`shikigva=128`)
-- Added `/usr/libexec/AirPlayXPCHelper` to the renderer whitelist
+- Added `/usr/libexec/AirPlayXPCHelper`, ffmpeg, and Photos to the renderer whitelist
+- Added Broadwell patches for compatible renderer (discrete GPU hardware acceleration)
+- Implemented GPU detection for compatible renderer, whitelist, and snb name (you can remove `shikigva`)
+- Fixed invalid Sandy Bridge compatible renderer patches
+- Disabled automatic iTunes crashfix hack for 10.13.4 and higher (you may have to reset DRM once you upgrade)
 
 #### v2.2.3
 - Fixed a rare crash when IGPU was not renamed

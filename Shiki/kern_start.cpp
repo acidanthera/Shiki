@@ -48,8 +48,8 @@ enum ShikiGVAPatches {
 	// While this breaks streaming, it is currently the only way to workaround iTunes crashes in 10.13
 	// when one has IGPU installed.
 	// This is the only bit that is enabled automatically on 10.13 and newer if shikigva is *NOT* passed
-	// via boot-args. Apple supposedly fixed this bug as of 10.13.4 Developer Beta 3, but some users
-	// still report crashes, so we will have it on for now.
+	// via boot-args. Apple fixed this bug as of 10.13.4 Developer Beta 3. Please note, that iTunes may
+	// still crash until you perform DRM reset (or make a clean macOS installation). See FAQ for details.
 	DisableHardwareKeyExchange = 16,
 	// Replace board-id used by AppleGVA by a different board-id.
 	// Sometimes it is feasible to use different GPU acceleration settings from the main mac model.
@@ -70,7 +70,9 @@ enum ShikiGVAPatches {
 };
 
 static bool autodetectIGPU {false};
+static bool autodetectGFX {false};
 static char customBoardID[64] {};
+static CPUInfo::CpuGeneration cpuGeneration {CPUInfo::CpuGeneration::Unknown};
 
 static void disableSection(uint32_t section) {
 	for (size_t i = 0; i < ADDPR(procInfoSize); i++) {
@@ -158,6 +160,10 @@ static bool shikiSetCompatibleRendererPatch() {
 		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080000 - 0x1080002);
 		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080000 - 0x1080002);
 		return true;
+	} else if (generation == CPUInfo::CpuGeneration::Broadwell) {
+		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080008);
+		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080008);
+		return true;
 	} else if (generation == CPUInfo::CpuGeneration::Skylake) {
 		*reinterpret_cast<int32_t *>(&yosemitePatchReplace[YosemitePatchOff]) += (0x1080004 - 0x1080010);
 		*reinterpret_cast<int32_t *>(&sierraPatchReplace[SierraPatchOff])     += (0x1080004 - 0x1080010);
@@ -177,6 +183,76 @@ static void shikiPatcherLoad(void *, KernelPatcher &) {
 		// Older IGPUs (and invalid frames) get no default hacks
 		if (frame == CPUInfo::DefaultInvalidPlatformId)
 			disableSection(SectionKEGVA);
+	}
+
+	if (autodetectGFX) {
+		bool hasExternalAMD = false, hasExternalNVIDIA = false;
+		auto sect = WIOKit::findEntryByPrefix("/AppleACPIPlatformExpert", "PCI", gIOServicePlane);
+		if (sect) sect = WIOKit::findEntryByPrefix(sect, "AppleACPIPCI", gIOServicePlane);
+		if (sect) {
+			auto iterator = sect->getChildIterator(gIOServicePlane);
+			if (iterator) {
+				IORegistryEntry *obj = nullptr;
+				while ((obj = OSDynamicCast(IORegistryEntry, iterator->getNextObject())) != nullptr) {
+					uint32_t vendor = 0, code = 0;
+					if (WIOKit::getOSDataValue(obj, "vendor-id", vendor) &&
+						WIOKit::getOSDataValue(obj, "class-code", code) &&
+						vendor == WIOKit::VendorID::Intel &&
+						code == WIOKit::ClassCode::PCIBridge) {
+						auto name = obj->getName();
+						DBGLOG("shiki", "found pci bridge %s", name ? name : "(unnamed)");
+						auto gpuiterator = IORegistryIterator::iterateOver(obj, gIOServicePlane, kIORegistryIterateRecursively);
+						if (gpuiterator) {
+							IORegistryEntry *gpuobj = nullptr;
+							while ((gpuobj = OSDynamicCast(IORegistryEntry, gpuiterator->getNextObject())) != nullptr) {
+								uint32_t gpuvendor = 0, gpucode = 0;
+								auto gpuname = gpuobj->getName();
+								DBGLOG("shiki", "found %s on pci bridge", gpuname ? gpuname : "(unnamed)");
+								if (WIOKit::getOSDataValue(gpuobj, "vendor-id", gpuvendor) &&
+									WIOKit::getOSDataValue(gpuobj, "class-code", gpucode) &&
+									(gpucode == WIOKit::ClassCode::DisplayController || gpucode == WIOKit::ClassCode::VGAController)) {
+									if (gpuvendor == WIOKit::VendorID::ATIAMD) {
+										DBGLOG("shiki", "found AMD GPU device %s", gpuname);
+										hasExternalAMD = true;
+										break;
+									} else if (gpuvendor == WIOKit::VendorID::NVIDIA) {
+										DBGLOG("shiki", "found NVIDIA GPU device %s", gpuname);
+										hasExternalNVIDIA = true;
+										break;
+									}
+								}
+							}
+
+							gpuiterator->release();
+						}
+					}
+				}
+				iterator->release();
+			}
+		}
+
+		bool disableWhitelist = false;
+		bool disableCompatRenderer = false;
+		if (hasExternalNVIDIA && cpuGeneration != CPUInfo::CpuGeneration::Broadwell &&
+			cpuGeneration != CPUInfo::CpuGeneration::Skylake &&
+			cpuGeneration != CPUInfo::CpuGeneration::KabyLake) {
+			disableCompatRenderer = true;
+			if (cpuGeneration != CPUInfo::CpuGeneration::SandyBridge)
+				disableWhitelist = true;
+		} else if (hasExternalAMD && cpuGeneration != CPUInfo::CpuGeneration::IvyBridge) {
+			disableCompatRenderer = true;
+			if (cpuGeneration != CPUInfo::CpuGeneration::SandyBridge)
+				disableWhitelist = true;
+		}
+
+		if (disableCompatRenderer)
+			disableSection(SectionCOMPATRENDERER);
+
+		if (disableWhitelist)
+			disableSection(SectionWHITELIST);
+
+		DBGLOG("shiki", "autodetedect decision: whitelist %d compat %d for cpu %d nvidia %d amd %d",
+			   !disableWhitelist, !disableCompatRenderer, cpuGeneration, hasExternalNVIDIA, hasExternalAMD);
 	}
 
 	if (customBoardID[0]) {
@@ -201,6 +277,8 @@ static void shikiStart() {
 	bool unlockFP10Streaming     = false;
 	bool fixSandyBridgeClassName = false;
 
+	cpuGeneration = CPUInfo::getGeneration();
+
 	int bootarg {0};
 	if (PE_parse_boot_argn("shikigva", &bootarg, sizeof(bootarg))) {
 		forceOnlineRenderer     = bootarg & ForceOnlineRenderer;
@@ -212,13 +290,27 @@ static void shikiStart() {
 		unlockFP10Streaming     = bootarg & UnlockFP10Streaming;
 		fixSandyBridgeClassName = bootarg & FixSandyBridgeClassName;
 	} else {
-		// By default enable iTunes hack on 10.13+ for Sandy+ IGPUs
-		disableKeyExchange = autodetectIGPU = getKernelVersion() >= KernelVersion::HighSierra;
+		// By default enable iTunes hack on 10.13~10.13.3 for Sandy+ IGPUs
+		disableKeyExchange = autodetectIGPU = getKernelVersion() == KernelVersion::HighSierra && getKernelMinorVersion() <= 4;
 
 		if (PE_parse_boot_argn("-shikigva", &bootarg, sizeof(bootarg))) {
 			SYSLOG("shiki", "-shikigva is deprecated use shikigva %d bit instead", ForceOnlineRenderer);
 			forceOnlineRenderer = true;
 		}
+
+		autodetectGFX = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge ||
+			cpuGeneration == CPUInfo::CpuGeneration::IvyBridge ||
+			cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
+			cpuGeneration == CPUInfo::CpuGeneration::Skylake ||
+			cpuGeneration == CPUInfo::CpuGeneration::KabyLake;
+
+		if (autodetectGFX) {
+			forceCompatibleRenderer = true;
+			addExecutableWhitelist = getKernelVersion() >= KernelVersion::HighSierra;
+			fixSandyBridgeClassName = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge;
+		}
+
+		DBGLOG("shiki", "will autodetect IGPU %d autodetect GFX %d", autodetectIGPU, autodetectGFX);
 	}
 
 	if (PE_parse_boot_argn("-shikifps", &bootarg, sizeof(bootarg))) {
@@ -226,9 +318,9 @@ static void shikiStart() {
 		unlockFP10Streaming = true;
 	}
 
-	DBGLOG("shiki", "config: online %d, bgra %d, compat %d, whitelist %d, ke1 %d, id %d, stream %d, sandy %d", forceOnlineRenderer,
-		allowNonBGRA, forceCompatibleRenderer, addExecutableWhitelist, disableKeyExchange, replaceBoardID, unlockFP10Streaming,
-		FixSandyBridgeClassName);
+	DBGLOG("shiki", "pre-config: online %d, bgra %d, compat %d, whitelist %d, ke1 %d, id %d, stream %d, sandy %d",
+		forceOnlineRenderer, allowNonBGRA, forceCompatibleRenderer, addExecutableWhitelist, disableKeyExchange, replaceBoardID,
+		unlockFP10Streaming, fixSandyBridgeClassName);
 
 	// Disable unused sections
 	if (!forceOnlineRenderer)

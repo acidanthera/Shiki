@@ -478,7 +478,15 @@
 		</dict>
 		<dict>
 			<key>Path</key>
-			<string>/bin/mpv</string>
+			<string>/mpv</string>
+			<key>Section</key>
+			<string>WHITELIST</string>
+			<key>Flags</key>
+			<string>PF::MatchSuffix</string>
+		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/ffmpeg</string>
 			<key>Section</key>
 			<string>WHITELIST</string>
 			<key>Flags</key>
@@ -487,6 +495,18 @@
 		<dict>
 			<key>Path</key>
 			<string>/Applications/FaceTime.app/Contents/MacOS/FaceTime</string>
+			<key>Section</key>
+			<string>WHITELIST</string>
+		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/Applications/Photos.app/Contents/MacOS/Photos</string>
+			<key>Section</key>
+			<string>WHITELIST</string>
+		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/System/Library/CoreServices/cloudphotosd.app/Contents/MacOS/cloudphotosd</string>
 			<key>Section</key>
 			<string>WHITELIST</string>
 		</dict>
