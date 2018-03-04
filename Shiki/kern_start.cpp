@@ -74,7 +74,6 @@ enum ShikiGVAPatches {
 	FixSandyBridgeClassName    = 128
 };
 
-static bool autodetectIGPU {false};
 static bool autodetectGFX {false};
 static char customBoardID[64] {};
 static CPUInfo::CpuGeneration cpuGeneration {CPUInfo::CpuGeneration::Unknown};
@@ -183,13 +182,6 @@ static bool shikiSetCompatibleRendererPatch() {
 }
 
 static void shikiPatcherLoad(void *, KernelPatcher &) {
-	if (autodetectIGPU) {
-		auto frame = CPUInfo::getGpuPlatformId();
-		// Older IGPUs (and invalid frames) get no default hacks
-		if (frame == CPUInfo::DefaultInvalidPlatformId)
-			disableSection(SectionKEGVA);
-	}
-
 	if (autodetectGFX) {
 		bool hasExternalAMD = false, hasExternalNVIDIA = false;
 		auto sect = WIOKit::findEntryByPrefix("/AppleACPIPlatformExpert", "PCI", gIOServicePlane);
@@ -293,7 +285,10 @@ static void shikiStart() {
 		fixSandyBridgeClassName = bootarg & FixSandyBridgeClassName;
 	} else {
 		// By default enable iTunes hack on 10.13~10.13.3 for Sandy+ IGPUs
-		disableKeyExchange = autodetectIGPU = getKernelVersion() == KernelVersion::HighSierra && getKernelMinorVersion() <= 4;
+		disableKeyExchange = getKernelVersion() == KernelVersion::HighSierra && getKernelMinorVersion() <= 4 &&
+		(cpuGeneration == CPUInfo::CpuGeneration::SandyBridge || cpuGeneration == CPUInfo::CpuGeneration::IvyBridge ||
+		 cpuGeneration == CPUInfo::CpuGeneration::Haswell || cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
+		 cpuGeneration == CPUInfo::CpuGeneration::Skylake || cpuGeneration == CPUInfo::CpuGeneration::KabyLake);
 
 		if (PE_parse_boot_argn("-shikigva", &bootarg, sizeof(bootarg))) {
 			SYSLOG("shiki", "-shikigva is deprecated use shikigva %d bit instead", ForceOnlineRenderer);
@@ -312,7 +307,7 @@ static void shikiStart() {
 			fixSandyBridgeClassName = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge;
 		}
 
-		DBGLOG("shiki", "will autodetect IGPU %d autodetect GFX %d", autodetectIGPU, autodetectGFX);
+		DBGLOG("shiki", "will autodetect autodetect GFX %d", autodetectGFX);
 	}
 
 	if (PE_parse_boot_argn("-shikifps", &bootarg, sizeof(bootarg))) {
@@ -357,7 +352,7 @@ static void shikiStart() {
 		disableSection(SectionSNBPLUGIN);
 
 	// Schedule onPatcherLoad if we need to autodetect IGPU or to set a custom board-id
-	if (autodetectIGPU || autodetectGFX || replaceBoardID) {
+	if (autodetectGFX || replaceBoardID) {
 		auto err = lilu.onPatcherLoad(shikiPatcherLoad);
 		if (err != LiluAPI::Error::NoError)
 			SYSLOG("shiki", "unable to attach to patcher load %d", err);
