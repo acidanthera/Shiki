@@ -33,23 +33,27 @@ enum ShikiGVAPatches {
 	AllowNonBGRA               = 2,
 	// Some GPU+CPU combinations are not meant to provide hardware acceleration and need to be patched.
 	// Fix hardware acceleration with NVIDIA+SKL, NVIDIA+KBL, AMD+IVB, NVIDIA+SNB.
+	// Enabled automatically if shikigva is *NOT* passed on the aforementioned hardware.
 	ForceCompatibleRenderer    = 4,
-	// Unlike 10.12 and earlier, on 10.13 AppleGVA patches do not apply to all processes, and each
-	// process needs to be patched explicitly. This bit ensures that processes present in WHITELIST
-	// section of Patches.plist will definitely get the fixes even on 10.13.
-	// On 10.13 this must be used if any of the following bits are used:
+	// Unlike 10.12.6 without security updates and earlier, on 10.13 and latest 10.12.6 AppleGVA patches
+	// do not apply to all processes, and each process needs to be patched explicitly. This is a bug
+	// in Lilu, which needs to be explored and fixed. For now this bit ensures that the processes present
+	// in WHITELIST section of Patches.plist will definitely get the fixes even on 10.13 and 10.12.6.
+	// On 10.12.6 and 10.13 this must be used if any of the following bits are used:
 	// - ForceOnlineRenderer
 	// - AllowNonBGRA
 	// - ForceCompatibleRenderer
 	// - ReplaceBoardID
 	// - FixSandyBridgeClassName
+	// It is enabled automatically on 10.12 and 10.13 if shikigva is *NOT* passed and ForceCompatibleRenderer or
+	// FixSandyBridgeClassName are automatically enabled.
 	AddExecutableWhitelist     = 8,
 	// Disable hardware-accelerated FairPlay support in iTunes to fix crashes in 10.13.
 	// While this breaks streaming, it is currently the only way to workaround iTunes crashes in 10.13
 	// when one has IGPU installed.
-	// This is the only bit that is enabled automatically on 10.13 and newer if shikigva is *NOT* passed
-	// via boot-args. Apple fixed this bug as of 10.13.4 Developer Beta 3. Please note, that iTunes may
-	// still crash until you perform DRM reset (or make a clean macOS installation). See FAQ for details.
+	// This is enabled automatically on 10.13 and newer if shikigva is *NOT* passed via boot-args.
+	// Apple fixed this bug as of 10.13.4 Developer Beta 3. Please note, that iTunes may still crash
+	// until you perform DRM reset (or make a clean macOS installation). See FAQ for details.
 	DisableHardwareKeyExchange = 16,
 	// Replace board-id used by AppleGVA by a different board-id.
 	// Sometimes it is feasible to use different GPU acceleration settings from the main mac model.
@@ -66,6 +70,7 @@ enum ShikiGVAPatches {
 	// GVA error: Not detecting IGPU in IORegistry!
 	// GVA error: Not detecting valid offline codec!
 	// The issue is that AppleGVA expects IntelAccelerator class, which Apple forgot to rename for Sandy.
+	// Enabled automatically if shikigva is *NOT* passed on Sandy Bridge hardware.
 	FixSandyBridgeClassName    = 128
 };
 
@@ -305,7 +310,7 @@ static void shikiStart() {
 
 		if (autodetectGFX) {
 			forceCompatibleRenderer = true;
-			addExecutableWhitelist = getKernelVersion() >= KernelVersion::HighSierra;
+			addExecutableWhitelist = getKernelVersion() >= KernelVersion::Sierra;
 			fixSandyBridgeClassName = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge;
 		}
 
