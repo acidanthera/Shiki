@@ -204,24 +204,22 @@ static void shikiPatcherLoad(void *, KernelPatcher &) {
 						WIOKit::getOSDataValue(obj, "class-code", code) &&
 						vendor == WIOKit::VendorID::Intel &&
 						code == WIOKit::ClassCode::PCIBridge) {
-						auto name = obj->getName();
-						DBGLOG("shiki", "found pci bridge %s", name ? name : "(unnamed)");
+						DBGLOG("shiki", "found pci bridge %s", safeString(obj->getName()));
 						auto gpuiterator = IORegistryIterator::iterateOver(obj, gIOServicePlane, kIORegistryIterateRecursively);
 						if (gpuiterator) {
 							IORegistryEntry *gpuobj = nullptr;
 							while ((gpuobj = OSDynamicCast(IORegistryEntry, gpuiterator->getNextObject())) != nullptr) {
 								uint32_t gpuvendor = 0, gpucode = 0;
-								auto gpuname = gpuobj->getName();
-								DBGLOG("shiki", "found %s on pci bridge", gpuname ? gpuname : "(unnamed)");
+								DBGLOG("shiki", "found %s on pci bridge", safeString(gpuobj->getName()));
 								if (WIOKit::getOSDataValue(gpuobj, "vendor-id", gpuvendor) &&
 									WIOKit::getOSDataValue(gpuobj, "class-code", gpucode) &&
 									(gpucode == WIOKit::ClassCode::DisplayController || gpucode == WIOKit::ClassCode::VGAController)) {
 									if (gpuvendor == WIOKit::VendorID::ATIAMD) {
-										DBGLOG("shiki", "found AMD GPU device %s", gpuname);
+										DBGLOG("shiki", "found AMD GPU device %s", safeString(gpuobj->getName()));
 										hasExternalAMD = true;
 										break;
 									} else if (gpuvendor == WIOKit::VendorID::NVIDIA) {
-										DBGLOG("shiki", "found NVIDIA GPU device %s", gpuname);
+										DBGLOG("shiki", "found NVIDIA GPU device %s", safeString(gpuobj->getName()));
 										hasExternalNVIDIA = true;
 										break;
 									}
