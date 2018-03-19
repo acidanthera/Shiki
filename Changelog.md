@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.2.5
+- Reenable iTunes crashfix hack on 10.13.x (since 10.13.4 seems to only reduce crash frequency)
+
 #### v2.2.4
 - Added an AppleGVA patch to fix Sandy Bridge accelerator name (`shikigva=128`)
 - Added `/usr/libexec/AirPlayXPCHelper`, ffmpeg, Quick Look, and Photos to the renderer whitelist
