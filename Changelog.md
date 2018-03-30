@@ -1,5 +1,7 @@
 Shiki Changelog
 ==================
+#### v2.2.6
+
 #### v2.2.5
 - Reenable iTunes crashfix hack on 10.13.x (since 10.13.4 seems to only reduce crash frequency)
 
