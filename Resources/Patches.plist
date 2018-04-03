@@ -538,6 +538,14 @@
 			<key>Flags</key>
 			<string>PF::MatchSuffix</string>
 		</dict>
+		<dict>
+			<key>Path</key>
+			<string>/Photo Booth.app/Contents/MacOS/Photo Booth</string>
+			<key>Section</key>
+			<string>WHITELIST</string>
+			<key>Flags</key>
+			<string>PF::MatchSuffix</string>
+		</dict>
 	</array>
 </dict>
 </plist>
