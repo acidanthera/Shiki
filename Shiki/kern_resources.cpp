@@ -104,6 +104,7 @@ UserPatcher::ProcInfo ADDPR(procInfo)[] {
 	{ "/usr/libexec/AirPlayXPCHelper", 29, SectionWHITELIST, PF::MatchExact },
 	{ "/Live Screen Capture.app/Contents/MacOS/Live Screen Capture", 59, SectionWHITELIST, PF::MatchSuffix },
 	{ "/iMovie.app/Contents/MacOS/iMovie", 33, SectionWHITELIST, PF::MatchSuffix },
+	{ "/Photo Booth.app/Contents/MacOS/Photo Booth", 43, SectionWHITELIST, PF::MatchSuffix },
 };
 
-const size_t ADDPR(procInfoSize) {31};
+const size_t ADDPR(procInfoSize) {32};
