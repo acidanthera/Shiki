@@ -2,6 +2,7 @@ Shiki Changelog
 ==================
 #### v2.2.6
 - Added Photo Booth to NVIDIA whitelist
+- Disabled hardware accelerated renderer hacks on 10.13.4 and newer (Apple fix)
 
 #### v2.2.5
 - Reenable iTunes crashfix hack on 10.13.x (since 10.13.4 seems to only reduce crash frequency)

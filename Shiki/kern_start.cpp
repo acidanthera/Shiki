@@ -31,9 +31,10 @@ enum ShikiGVAPatches {
 	// in a mac model meant to be used with AMD or Intel.
 	// See /System/Library/PrivateFrameworks/AppleGVA.framework/Resources/Info.plist for mor details.
 	AllowNonBGRA               = 2,
-	// Some GPU+CPU combinations are not meant to provide hardware acceleration and need to be patched.
-	// Fix hardware acceleration with NVIDIA+SKL, NVIDIA+KBL, AMD+IVB, NVIDIA+SNB.
-	// Enabled automatically if shikigva is *NOT* passed on the aforementioned hardware.
+	// Prior to 10.13.4 certain GPU+CPU combinations were not meant to provide hardware acceleration and had to be patched.
+	// It is not clear, whether NVIDIA+SNB works, since there is a possibly related Metal check...
+	// The overall problematic configuration list is: NVIDIA+BDW, NVIDIA+SKL, NVIDIA+KBL, AMD+IVB, NVIDIA+SNB.
+	// Enabled automatically if shikigva is *NOT* passed on 10.13.3 and earlier.
 	ForceCompatibleRenderer    = 4,
 	// Unlike 10.12.6 without security updates and earlier, on 10.13 and latest 10.12.6 AppleGVA patches
 	// do not apply to all processes, and each process needs to be patched explicitly. This is a bug
@@ -293,19 +294,27 @@ static void shikiStart() {
 			forceOnlineRenderer = true;
 		}
 
-		autodetectGFX = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge ||
-			cpuGeneration == CPUInfo::CpuGeneration::IvyBridge ||
-			cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
-			cpuGeneration == CPUInfo::CpuGeneration::Skylake ||
-			cpuGeneration == CPUInfo::CpuGeneration::KabyLake;
+		// Starting with 10.13.4 Apple has fixed AppleGVA to no longer require patching for compatible renderer.
+		if ((getKernelVersion() == KernelVersion::HighSierra && getKernelMinorVersion() < 5) ||
+			getKernelVersion() < KernelVersion::HighSierra) {
+			autodetectGFX = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge ||
+				cpuGeneration == CPUInfo::CpuGeneration::IvyBridge ||
+				cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
+				cpuGeneration == CPUInfo::CpuGeneration::Skylake ||
+				cpuGeneration == CPUInfo::CpuGeneration::KabyLake;
 
-		if (autodetectGFX) {
-			forceCompatibleRenderer = true;
-			addExecutableWhitelist = getKernelVersion() >= KernelVersion::Sierra;
-			fixSandyBridgeClassName = cpuGeneration == CPUInfo::CpuGeneration::SandyBridge;
+			if (autodetectGFX) {
+				forceCompatibleRenderer = true;
+				addExecutableWhitelist = getKernelVersion() >= KernelVersion::Sierra;
+			}
 		}
 
-		DBGLOG("shiki", "will autodetect autodetect GFX %d", autodetectGFX);
+		if (cpuGeneration == CPUInfo::CpuGeneration::SandyBridge) {
+			fixSandyBridgeClassName = true;
+			addExecutableWhitelist = getKernelVersion() >= KernelVersion::Sierra;
+		}
+
+		DBGLOG("shiki", "will autodetect autodetect GFX %d whitelist %d sandy %d", autodetectGFX, addExecutableWhitelist, fixSandyBridgeClassName);
 	}
 
 	if (PE_parse_boot_argn("-shikifps", &bootarg, sizeof(bootarg))) {
