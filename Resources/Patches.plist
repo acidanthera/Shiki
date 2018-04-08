@@ -275,24 +275,6 @@
 					<key>Segment</key>
 					<string>TextCstring</string>
 				</dict>
-				<dict>
-					<key>Comment</key>
-					<string>IntelAccelerator -&gt; Gen6Accelerator (fixes Sandy Bridge warnings)</string>
-					<key>CPU</key>
-					<string>CPU_TYPE_X86_64</string>
-					<key>Find</key>
-					<data>SW50ZWxBY2NlbGVyYXRvcg==</data>
-					<key>Replace</key>
-					<data>R2VuNkFjY2VsZXJhdG9yAA==</data>
-					<key>Skip</key>
-					<integer>0</integer>
-					<key>Count</key>
-					<integer>1</integer>
-					<key>Section</key>
-					<string>SNBPLUGIN</string>
-					<key>Segment</key>
-					<string>TextCstring</string>
-				</dict>
 			</array>
 		</dict>
 	</array>

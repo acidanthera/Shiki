@@ -32,9 +32,8 @@ enum ShikiGVAPatches {
 	// See /System/Library/PrivateFrameworks/AppleGVA.framework/Resources/Info.plist for mor details.
 	AllowNonBGRA               = 2,
 	// Prior to 10.13.4 certain GPU+CPU combinations were not meant to provide hardware acceleration and had to be patched.
-	// It is not clear, whether NVIDIA+SNB works, since there is a possibly related Metal check...
 	// The overall problematic configuration list is: NVIDIA+BDW, NVIDIA+SKL, NVIDIA+KBL, AMD+IVB, NVIDIA+SNB.
-	// Enabled automatically if shikigva is *NOT* passed on 10.13.3 and earlier.
+	// Enabled automatically if shikigva is *NOT* passed on 10.13.3 and earlier. All are fixed in 10.13.4.
 	ForceCompatibleRenderer    = 4,
 	// Unlike 10.12.6 without security updates and earlier, on 10.13 and latest 10.12.6 AppleGVA patches
 	// do not apply to all processes, and each process needs to be patched explicitly. This is a bug
@@ -66,11 +65,9 @@ enum ShikiGVAPatches {
 	// Another way to enable this is to pass -shikifps boot argument.
 	UnlockFP10Streaming        = 64,
 	// Replace IntelAccelerator with Gen6Accelerator to fix AppleGVA warnings on Sandy Bridge.
-	// GVA error: Not detecting IGPU in IORegistry!
-	// GVA error: Not detecting valid offline codec!
-	// The issue is that AppleGVA expects IntelAccelerator class, which Apple forgot to rename for Sandy.
-	// Enabled automatically if shikigva is *NOT* passed on Sandy Bridge hardware.
-	FixSandyBridgeClassName    = 128
+	// REMOVED! Implemented more properly in IntelGraphicsFixup:
+	// https://github.com/lvs1974/IntelGraphicsFixup/commit/13c64b0659b8eea24189377ff36be35e73474779
+	DeprecatedUnused128        = 128
 };
 
 static bool autodetectGFX {false};
@@ -268,7 +265,6 @@ static void shikiStart() {
 	bool disableKeyExchange      = false;
 	bool replaceBoardID          = false;
 	bool unlockFP10Streaming     = false;
-	bool fixSandyBridgeClassName = false;
 
 	cpuGeneration = CPUInfo::getGeneration();
 
@@ -281,7 +277,6 @@ static void shikiStart() {
 		disableKeyExchange      = bootarg & DisableHardwareKeyExchange;
 		replaceBoardID          = bootarg & ReplaceBoardID;
 		unlockFP10Streaming     = bootarg & UnlockFP10Streaming;
-		fixSandyBridgeClassName = bootarg & FixSandyBridgeClassName;
 	} else {
 		// By default enable iTunes hack on 10.13.x for Sandy+ IGPUs
 		disableKeyExchange = getKernelVersion() == KernelVersion::HighSierra &&
@@ -309,12 +304,7 @@ static void shikiStart() {
 			}
 		}
 
-		if (cpuGeneration == CPUInfo::CpuGeneration::SandyBridge) {
-			fixSandyBridgeClassName = true;
-			addExecutableWhitelist = getKernelVersion() >= KernelVersion::Sierra;
-		}
-
-		DBGLOG("shiki", "will autodetect autodetect GFX %d whitelist %d sandy %d", autodetectGFX, addExecutableWhitelist, fixSandyBridgeClassName);
+		DBGLOG("shiki", "will autodetect autodetect GFX %d whitelist %d", autodetectGFX, addExecutableWhitelist);
 	}
 
 	if (PE_parse_boot_argn("-shikifps", &bootarg, sizeof(bootarg))) {
@@ -322,9 +312,9 @@ static void shikiStart() {
 		unlockFP10Streaming = true;
 	}
 
-	DBGLOG("shiki", "pre-config: online %d, bgra %d, compat %d, whitelist %d, ke1 %d, id %d, stream %d, sandy %d",
+	DBGLOG("shiki", "pre-config: online %d, bgra %d, compat %d, whitelist %d, ke1 %d, id %d, stream %d",
 		forceOnlineRenderer, allowNonBGRA, forceCompatibleRenderer, addExecutableWhitelist, disableKeyExchange, replaceBoardID,
-		unlockFP10Streaming, fixSandyBridgeClassName);
+		unlockFP10Streaming);
 
 	// Disable unused sections
 	if (!forceOnlineRenderer)
@@ -354,9 +344,6 @@ static void shikiStart() {
 
 	if (!unlockFP10Streaming)
 		disableSection(SectionNSTREAM);
-
-	if (!fixSandyBridgeClassName)
-		disableSection(SectionSNBPLUGIN);
 
 	// Schedule onPatcherLoad if we need to autodetect IGPU or to set a custom board-id
 	if (autodetectGFX || replaceBoardID) {
