@@ -27,9 +27,8 @@ enum : uint32_t {
 	SectionNDRMI = 3,
 	SectionBGRA = 4,
 	SectionBOARDID = 5,
-	SectionSNBPLUGIN = 6,
-	SectionNSTREAM = 7,
-	SectionCOMPATRENDERER = 8,
-	SectionKEGVA = 9,
-	SectionWHITELIST = 10,
+	SectionNSTREAM = 6,
+	SectionCOMPATRENDERER = 7,
+	SectionKEGVA = 8,
+	SectionWHITELIST = 9,
 };

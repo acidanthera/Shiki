@@ -3,6 +3,7 @@ Shiki Changelog
 #### v2.2.6
 - Added Photo Booth to NVIDIA whitelist
 - Disabled hardware accelerated renderer hacks on 10.13.4 and newer (Apple fix)
+- Removed Sandy Bridge Gen6Accelerator patch due to [better fix](https://github.com/lvs1974/IntelGraphicsFixup/commit/13c64b0659b8eea24189377ff36be35e73474779) in IntelGraphicsFixup 
 
 #### v2.2.5
 - Reenable iTunes crashfix hack on 10.13.x (since 10.13.4 seems to only reduce crash frequency)
