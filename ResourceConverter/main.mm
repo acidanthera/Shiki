@@ -179,7 +179,7 @@ int main(int argc, const char * argv[]) {
 		auto outputCpp = [[[NSString alloc] initWithUTF8String:argv[2]] autorelease];
 		auto outputHpp = [[[NSString alloc] initWithUTF8String:argv[3]] autorelease];
 		
-		auto patches = [NSDictionary dictionaryWithContentsOfFile:patchesCfg];
+		NSDictionary *patches = [NSDictionary dictionaryWithContentsOfFile:patchesCfg];
 		
 		if (!patches)
 			ERROR("Missing resource data");
