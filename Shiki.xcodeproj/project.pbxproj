@@ -509,7 +509,7 @@
 				MODULE_NAME = as.vit9696.Shiki;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 2.2.6;
+				MODULE_VERSION = 2.2.7;
 				OTHER_CFLAGS = (
 					"-mmmx",
 					"-msse",
@@ -554,7 +554,7 @@
 				MODULE_NAME = as.vit9696.Shiki;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 2.2.6;
+				MODULE_VERSION = 2.2.7;
 				OTHER_CFLAGS = (
 					"-mmmx",
 					"-msse",

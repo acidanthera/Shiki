@@ -1,5 +1,8 @@
 Shiki Changelog
 ==================
+#### v2.2.7
+- Disable iTunes hack on 10.13.5 and newer
+
 #### v2.2.6
 - Added Photo Booth to NVIDIA whitelist
 - Disabled hardware accelerated renderer hacks on 10.13.4 and newer (Apple fix)

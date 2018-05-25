@@ -51,7 +51,7 @@ enum ShikiGVAPatches {
 	// Disable hardware-accelerated FairPlay support in iTunes to fix crashes in 10.13.
 	// While this breaks streaming, it is currently the only way to workaround iTunes crashes in 10.13
 	// when one has IGPU installed.
-	// This is enabled automatically on 10.13.x if shikigva is *NOT* passed via boot-args.
+	// This is enabled automatically on 10.13.x till 10.13.4 inclusive if shikigva is *NOT* passed via boot-args.
 	DisableHardwareKeyExchange = 16,
 	// Replace board-id used by AppleGVA by a different board-id.
 	// Sometimes it is feasible to use different GPU acceleration settings from the main mac model.
@@ -278,8 +278,8 @@ static void shikiStart() {
 		replaceBoardID          = bootarg & ReplaceBoardID;
 		unlockFP10Streaming     = bootarg & UnlockFP10Streaming;
 	} else {
-		// By default enable iTunes hack on 10.13.x for Sandy+ IGPUs
-		disableKeyExchange = getKernelVersion() == KernelVersion::HighSierra &&
+		// By default enable iTunes hack on 10.13-10.13.4 for Sandy+ IGPUs
+		disableKeyExchange = getKernelVersion() == KernelVersion::HighSierra && getKernelMinorVersion() <= 5 &&
 		(cpuGeneration == CPUInfo::CpuGeneration::SandyBridge || cpuGeneration == CPUInfo::CpuGeneration::IvyBridge ||
 		 cpuGeneration == CPUInfo::CpuGeneration::Haswell || cpuGeneration == CPUInfo::CpuGeneration::Broadwell ||
 		 cpuGeneration == CPUInfo::CpuGeneration::Skylake || cpuGeneration == CPUInfo::CpuGeneration::KabyLake);
